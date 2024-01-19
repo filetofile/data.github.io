@@ -2179,7 +2179,7 @@ matches[matches.length-1]="===================================================="
   gdjs.__db.dellurla(); gdjs.__db.dellurlz(); gdjs.__db.dellurle(); 
   while (1) 
   {
-    if(matches.length<=i+1)
+    if(matches.length<=i)
     {
       break;
     }
