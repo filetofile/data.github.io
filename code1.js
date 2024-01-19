@@ -184,10 +184,7 @@ runtimeScene.addds = function ()
     {
         sourceBuffer.remove(sourceBuffer.buffered.start(0), videoPlayer.currentTime()-100);
     }
-    if (videoPlayer.currentTime() == cr) 
-    {
-        alert("=======");
-    }
+    
     aecrr[2] = new gdjs.Variable({type: "number",value:  buffered.length,});
     aecrr[3] = new gdjs.Variable({type: "number",value: aecrr[3].getAsNumber() +totalSize,}); 
 }
