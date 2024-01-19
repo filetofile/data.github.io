@@ -1554,7 +1554,7 @@ if(kk[0].getAsNumber()==3)
 
 
 
-if(imageUrl != "null")
+if(imageUrl != null)
 {
    runtimeScene.downloadimagevvss(imageUrl);
 }
