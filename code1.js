@@ -1541,22 +1541,22 @@ let imageUrl;
 
 if(kk[0].getAsNumber()==1)
 {
-    imageUrl = gdjs.__db.domain()+gdjs.__db.getnurla( vnimagevideo[0].getAsNumber());
+    imageUrl = gdjs.__db.getnurla( vnimagevideo[0].getAsNumber());
 }
 if(kk[0].getAsNumber()==2)
 {
-    imageUrl = gdjs.__db.domain()+gdjs.__db.getnurlz( vnimagevideo[0].getAsNumber());
+    imageUrl = gdjs.__db.getnurlz( vnimagevideo[0].getAsNumber());
 }
 if(kk[0].getAsNumber()==3)
 {
-    imageUrl = gdjs.__db.domain()+gdjs.__db.getnurle( vnimagevideo[0].getAsNumber());
+    imageUrl = gdjs.__db.getnurle( vnimagevideo[0].getAsNumber());
 }
 
 
 
 if(imageUrl != null)
 {
-   runtimeScene.downloadimagevvss(imageUrl);
+   runtimeScene.downloadimagevvss(gdjs.__db.domain()+imageUrl);
 }
 else
 {
