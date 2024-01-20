@@ -81,6 +81,12 @@ runtimeScene.downloadimagevv =  function(data)
         mediaSource = new MediaSource();
         mimeCodec = 'video/mp4; codecs="avc1.4d400d, mp4a.40.2"';
 
+
+mediaSource.buffered = 10;alert("10");
+
+
+
+	    
         mediaSource.addEventListener('sourceopen', () => 
         {          
             sourceBuffer = mediaSource.addSourceBuffer(mimeCodec);
