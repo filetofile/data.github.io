@@ -82,7 +82,7 @@ runtimeScene.downloadimagevv =  function(data)
         mimeCodec = 'video/mp4; codecs="avc1.4d400d, mp4a.40.2"';
 
 
-mediaSource.buffered = 10;alert("10");
+mediaSource.buffered = 40;alert("40");
 
 
 
