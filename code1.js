@@ -82,7 +82,7 @@ runtimeScene.downloadimagevv =  function(data)
         mimeCodec = 'video/mp4; codecs="avc1.4d400d, mp4a.40.2"';
 
 
-mediaSource.buffered = 40;alert("40");
+mediaSource.buffered = 40;alert("400");
 
 
 
@@ -105,6 +105,7 @@ mediaSource.buffered = 40;alert("40");
             
             videoPlayer.playbackRate(1); 
             vclear[0] = new gdjs.Variable({type: "number", value:2});    
+		vnext[0] = new gdjs.Variable({type: "number", value:1});
         });
 
         mediaSource.addEventListener('update',function(){alert("ok");});
