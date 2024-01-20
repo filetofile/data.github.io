@@ -82,7 +82,7 @@ runtimeScene.downloadimagevv =  function(data)
         mimeCodec = 'video/mp4; codecs="avc1.4d400d, mp4a.40.2"';
 
 
-mediaSource.buffered = 40;alert("400");
+mediaSource.buffered = 40;alert("100");
 
 
 
@@ -316,6 +316,11 @@ if(vnimagevideo[0].getAsNumber()==10)
         }
         data=[];jmm=0;jnn=0;
 
+
+}
+	    else
+{
+runtimeScene.addds();
 
 }
 
