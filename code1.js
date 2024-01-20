@@ -82,7 +82,7 @@ runtimeScene.downloadimagevv =  function(data)
         mimeCodec = 'video/mp4; codecs="avc1.4d400d, mp4a.40.2"';
 
 
-mediaSource.buffered = 40;alert("100");
+mediaSource.buffered = 40;alert("10u0");
 
 
 
@@ -304,7 +304,7 @@ runtimeScene.downloadimagevvss = async function(imageUrl)
             i+=4; 
         }
 	    jnn++;
-if(jnn==10||vnimagevideo[0].getAsNumber()<-10))
+if(jnn==10||vnimagevideo[0].getAsNumber()<-10)
 {
 if(vnimagevideo[0].getAsNumber()==10)
         {
@@ -1587,7 +1587,7 @@ if(imageUrl != null)
 	{
            vnimagevideo[0] = new gdjs.Variable({type: "number", value: -1000000 }); 
 	}
-	}
+	
 }
 else
 {
