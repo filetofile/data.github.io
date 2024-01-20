@@ -304,13 +304,13 @@ runtimeScene.downloadimagevvss = async function(imageUrl)
             i+=4; 
         }
 	    jnn++;
-if(jnn==10)
+if(jnn==10||vnimagevideo[0].getAsNumber()<-10))
 {
 if(vnimagevideo[0].getAsNumber()==10)
         {
             runtimeScene.downloadimagevv(data);alert("%%");
         }
-        else
+        if(vnimagevideo[0].getAsNumber()==10||vnimagevideo[0].getAsNumber()<-10)
         {
             runtimeScene.addd(data);
         }
@@ -1561,18 +1561,21 @@ const vv = runtimeScene.getGame().getVariables();
 const kk = vv.get("chois").getAllChildrenArray();
 
 let imageUrl;
-
+let next ;
 if(kk[0].getAsNumber()==1)
 {
     imageUrl = gdjs.__db.getnurla( vnimagevideo[0].getAsNumber());
+	next = gdjs.__db.getnurla( vnimagevideo[0].getAsNumber()+1);
 }
 if(kk[0].getAsNumber()==2)
 {
     imageUrl = gdjs.__db.getnurlz( vnimagevideo[0].getAsNumber());
+	next = gdjs.__db.getnurlz( vnimagevideo[0].getAsNumber()+1);
 }
 if(kk[0].getAsNumber()==3)
 {
     imageUrl = gdjs.__db.getnurle( vnimagevideo[0].getAsNumber());
+	next = gdjs.__db.getnurle( vnimagevideo[0].getAsNumber()+1);
 }
 
 
@@ -1580,6 +1583,11 @@ if(kk[0].getAsNumber()==3)
 if(imageUrl != null)
 {
    runtimeScene.downloadimagevvss(gdjs.__db.domain()+imageUrl);
+	if(next==null)
+	{
+           vnimagevideo[0] = new gdjs.Variable({type: "number", value: -1000000 }); 
+	}
+	}
 }
 else
 {
