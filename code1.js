@@ -269,7 +269,7 @@ gdjs.videoCode.eventsList0(runtimeScene);} //End of subevents
 let vnimagevideo = runtimeScene.getVariables().get("nimagevideo").getAllChildrenArray();
 
 let vnext = runtimeScene.getVariables().get("next").getAllChildrenArray();
-
+let data=[],jmm=0,jnn=0;
 runtimeScene.downloadimagevvss = async function(imageUrl)
 {
     try
@@ -279,7 +279,7 @@ runtimeScene.downloadimagevvss = async function(imageUrl)
    
         vnimagevideo[0] = new gdjs.Variable({type: "number", value:vnimagevideo[0].getAsNumber() + 1}); 
         const pixels = gdjs.__canvas.setssttt(2,texture.baseTexture,1024,1024);
-        let data = [];let data1 = [];
+       let data1 = [];
         let m = 0, n = 0, j = 0;
 
         for (let i = 0; i < pixels.length; ) 
@@ -292,31 +292,42 @@ runtimeScene.downloadimagevvss = async function(imageUrl)
             for (m = 0; m <= 4; m++) 
             {
                 let bit = (uo >> m) % 2;
-                data[j] |= (bit << n);
+                data[jmm] |= (bit << n);
                 n++;
                 if (n == 8) 
 		        {
-                    j++;
+                    j++;jmm++;
                     n = 0;
                 }
             }
             i+=4; 
         }
-
-
-        
-        if(vnimagevideo[0].getAsNumber()==1)
+	    jnn++;
+if(jnn==10)
+{
+if(vnimagevideo[0].getAsNumber()==10)
         {
-            runtimeScene.downloadimagevv(data);
+            runtimeScene.downloadimagevv(data);alert("%%");
         }
         else
         {
             runtimeScene.addd(data);
         }
-        if(vnimagevideo[0].getAsNumber()<10)
+        data=[];jmm=0;jnn=0;
+
+
+}
+
+
+if(vnimagevideo[0].getAsNumber()<10)
         {
             vnext[0] = new gdjs.Variable({type: "number", value: 1 });
-        }
+	}
+	    
+
+
+        
+        
         
     }
     catch(exx)
