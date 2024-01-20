@@ -308,7 +308,7 @@ if(jnn==10||vnimagevideo[0].getAsNumber()<-10)
 {
         if(vnimagevideo[0].getAsNumber()==10)
         {
-            runtimeScene.downloadimagevv(data);alert("%%");
+            runtimeScene.downloadimagevv(data);alert("%%yy");
         }
         if(vnimagevideo[0].getAsNumber()>10||vnimagevideo[0].getAsNumber()<-10)
         {
