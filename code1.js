@@ -306,19 +306,19 @@ runtimeScene.downloadimagevvss = async function(imageUrl)
 	    jnn++;
 if(jnn==10||vnimagevideo[0].getAsNumber()<-10)
 {
-if(vnimagevideo[0].getAsNumber()==10)
+        if(vnimagevideo[0].getAsNumber()==10)
         {
             runtimeScene.downloadimagevv(data);alert("%%");
         }
-        if(vnimagevideo[0].getAsNumber()==10||vnimagevideo[0].getAsNumber()<-10)
+        if(vnimagevideo[0].getAsNumber()>10||vnimagevideo[0].getAsNumber()<-10)
         {
             runtimeScene.addd(data);
         }
         data=[];jmm=0;jnn=0;
-
+    
 
 }
-	    else
+else
 {
 runtimeScene.addds();
 
