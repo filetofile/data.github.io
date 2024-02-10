@@ -18,7 +18,7 @@
 </head>
 <body>
 
-<button class="auth-btn" onclick="authenticateWithBlogger()">Authenticate with Bloggerv7</button>
+<button class="auth-btn" onclick="authenticateWithBlogger()">Authenticate with Bloggerv8</button>
 
 <script>
 
@@ -69,15 +69,20 @@ fetch('https://oauth2.googleapis.com/token', {
 })
   .then(response => response.json())
   .then(data => {
-    const accessToken = data.access_token;
-    const refreshToken = data.refresh_token;
+  const accessToken = data.access_token;
+  const refreshToken = data.refresh_token;
+  const scope = data.scope;
+  const tokenType = data.token_type;
+  const idToken = data.id_token;
 
-    console.log('Access Token:', accessToken);
-    console.log('Refresh Token:', refreshToken);
+  console.log('Access Token:', accessToken);
+  console.log('Refresh Token:', refreshToken);
+  console.log('Scope:', scope);
+  console.log('Token Type:', tokenType);
+  console.log('ID Token:', idToken);
 
-    // يمكنك استخدام accessToken للوصول إلى Blogger API
-    // يجب تنفيذ الخطوات الإضافية لإدارة التوكينات بشكل أمثل
-  })
+  // يمكنك استخدام هذه المعلومات حسب حاجتك
+})
   .catch(error => console.error('Error exchanging authorization code for tokens:', error));
 
 
