@@ -18,107 +18,71 @@
 </head>
 <body>
 
-<button class="auth-btn" onclick="authenticateWithBlogger()">Authenticate with Bloggerv9</button>
+<button class="auth-btn" onclick="authenticateWithBlogger()">Authenticate with Bloggerv10</button>
 
 <script>
 
+const clientId = '292101494800-n9be285nbq7m3kds9h3ursb9sa9d06a5.apps.googleusercontent.com';
+const redirectUri = 'https://filetofile.github.io/data.github.io/blogger.html';
+const scope = 'https://www.googleapis.com/auth/blogger';
+let accessToken;
 
-  const clientId = '292101494800-n9be285nbq7m3kds9h3ursb9sa9d06a5.apps.googleusercontent.com';
-    const redirectUri = 'https://filetofile.github.io/data.github.io/blogger.html';
-    const scope = 'https://www.googleapis.com/auth/blogger';
+function authenticateWithBlogger() {
+  const authUrl = `https://accounts.google.com/o/oauth2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}&response_type=code`;
+  const authWindow = window.open(authUrl, '_self');
+}
 
-    const authUrl = `https://accounts.google.com/o/oauth2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}&response_type=code`;
-
-  function authenticateWithBlogger() {
-    
-    const authWindow = window.open(authUrl, '_self');
-
-    
-
-
-
+function validateAccessToken() {
+  if (accessToken) {
+    fetch('https://www.googleapis.com/oauth2/v1/userinfo', {
+      headers: {
+        'Authorization': `Bearer ${accessToken}`,
+      },
+    })
+      .then(response => response.json())
+      .then(userInfo => {
+        console.log('User Info:', userInfo);
+        alert('Access Token is valid. User Info: ' + JSON.stringify(userInfo));
+      })
+      .catch(error => {
+        console.error('Error validating access token:', error);
+        alert('Access Token is invalid. Please re-authenticate.');
+      });
+  } else {
+    alert('No access token available. Please authenticate first.');
   }
-
+}
 
 window.addEventListener('load', () => {
   const urlParams = new URLSearchParams(window.location.search);
   const authorizationCode = urlParams.get('code');
 
   if (authorizationCode) {
-    console.log('Authorization Code:', authorizationCode);
+    const clientSecret = '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';
 
-
-
-
-
-
-
-
-
-    
-const clientSecret = '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';
-let tockenab;
-
-// تبديل رمز التصريح بتوكين الوصول
-fetch('https://oauth2.googleapis.com/token', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/x-www-form-urlencoded',
-  },
-  body: `code=${authorizationCode}&client_id=${clientId}&client_secret=${clientSecret}&redirect_uri=${redirectUri}&grant_type=authorization_code`,
-})
-  .then(response => response.json())
-  .then(data => {
-  const accessToken = data.access_token;
-  const refreshToken = data.refresh_token;
-  const scope = data.scope;
-  const tokenType = data.token_type;
-  const idToken = data.id_token;
-   tockenab = accessToken;
-  console.log('Access Token:', accessToken);
-  console.log('Refresh Token:', refreshToken);
-  console.log('Scope:', scope);
-  console.log('Token Type:', tokenType);
-  console.log('ID Token:', idToken);
-  console.log('Refresh Token:', refreshToken);
-  // يمكنك استخدام هذه المعلومات حسب حاجتك
-})
-  .catch(error => console.error('Error exchanging authorization code for tokens:', error));
-
-
-
-
-let accessToken = tockenab; // قم بتعويضه بقيمة AccessToken الخاص بك
-
-fetch('https://www.googleapis.com/oauth2/v1/userinfo', {
-  headers: {
-    'Authorization': `Bearer ${accessToken}`,
-  },
-})
-  .then(response => response.json())
-  .then(userInfo => {
-    console.log('User Info:', userInfo);
-    // يمكنك تحليل استجابة userinfo هنا
-  })
-  .catch(error => {
-    console.error('Error validating access token:', error);
-    // إذا كان هناك خطأ، يعني التوكين غير صالح
-  });
-
-
-
-
-
-
-
-    
-    // يمكنك هنا استخدام رمز التصريح لاسترجاع التوكينات الوصول والوصول إلى Blogger API
-    // يجب تنفيذ الخطوات الإضافية لإدارة التوكينات بشكل أمثل
+    fetch('https://oauth2.googleapis.com/token', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: `code=${authorizationCode}&client_id=${clientId}&client_secret=${clientSecret}&redirect_uri=${redirectUri}&grant_type=authorization_code`,
+    })
+      .then(response => response.json())
+      .then(data => {
+        accessToken = data.access_token;
+        console.log('Access Token:', accessToken);
+        alert('Authentication successful. Access Token: ' + accessToken);
+        validateAccessToken(); // Perform access token validation
+      })
+      .catch(error => {
+        console.error('Error exchanging authorization code for tokens:', error);
+        alert('Error exchanging authorization code for tokens. Please try again.');
+      });
   } else {
     console.log('No authorization code found in the URL.');
   }
 });
-  
+
 </script>
 
 </body>
