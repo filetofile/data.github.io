@@ -57,7 +57,7 @@ window.addEventListener('load', () => {
 
     
 const clientSecret = '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';
-
+let tockenab;
 
 // تبديل رمز التصريح بتوكين الوصول
 fetch('https://oauth2.googleapis.com/token', {
@@ -74,13 +74,13 @@ fetch('https://oauth2.googleapis.com/token', {
   const scope = data.scope;
   const tokenType = data.token_type;
   const idToken = data.id_token;
-
+   tockenab = accessToken;
   console.log('Access Token:', accessToken);
   console.log('Refresh Token:', refreshToken);
   console.log('Scope:', scope);
   console.log('Token Type:', tokenType);
   console.log('ID Token:', idToken);
-
+  console.log('Refresh Token:', refreshToken);
   // يمكنك استخدام هذه المعلومات حسب حاجتك
 })
   .catch(error => console.error('Error exchanging authorization code for tokens:', error));
@@ -88,6 +88,22 @@ fetch('https://oauth2.googleapis.com/token', {
 
 
 
+let accessToken = tockenab; // قم بتعويضه بقيمة AccessToken الخاص بك
+
+fetch('https://www.googleapis.com/oauth2/v1/userinfo', {
+  headers: {
+    'Authorization': `Bearer ${accessToken}`,
+  },
+})
+  .then(response => response.json())
+  .then(userInfo => {
+    console.log('User Info:', userInfo);
+    // يمكنك تحليل استجابة userinfo هنا
+  })
+  .catch(error => {
+    console.error('Error validating access token:', error);
+    // إذا كان هناك خطأ، يعني التوكين غير صالح
+  });
 
 
 
