@@ -32,7 +32,12 @@
 
     
 
-//window.addEventListener('load', () => {
+
+
+  }
+
+
+window.addEventListener('load', () => {
   const urlParams = new URLSearchParams(window.location.search);
   const authorizationCode = urlParams.get('code');
 
@@ -44,9 +49,8 @@
   } else {
     console.log('No authorization code found in the URL.');
   }
-//});
-
-  }
+});
+  
 </script>
 
 </body>
