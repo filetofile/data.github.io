@@ -18,7 +18,7 @@
 </head>
 <body>
 
-<button class="auth-btn" onclick="authenticateWithBlogger()">Authenticate with Bloggerv11</button>
+<button class="auth-btn" onclick="authenticateWithBlogger()">Authenticate with Bloggerv12</button>
 
 <script>
 
@@ -34,26 +34,36 @@ function authenticateWithBlogger() {
 
 function validateAccessToken() {
   if (accessToken) {
-    fetch('https://www.googleapis.com/oauth2/v1/userinfo', {
-      headers: {
-        'Authorization': `Bearer ${accessToken}`,
-        'Content-Type': 'application/json', // قد تكون هناك حاجة إلى إضافة هذا الرأس
-      },
-    })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then(userInfo => {
-        console.log('User Info:', userInfo);
-        alert('Access Token is valid. User Info: ' + JSON.stringify(userInfo));
-      })
-      .catch(error => {
-        console.error('Error validating access token:', error);
-        alert('Access Token is invalid. Please re-authenticate.');
-      });
+
+
+
+
+
+fetch('https://www.googleapis.com/oauth2/v3/tokeninfo', {
+  headers: {
+    'Authorization': `Bearer ${accessToken}`,
+    'Content-Type': 'application/json',
+  },
+})
+  .then(response => response.json())
+  .then(tokenInfo => {
+    console.log('Token Info:', tokenInfo);
+    if (tokenInfo.error) {
+      throw new Error(`Token info error: ${tokenInfo.error_description}`);
+    }
+    alert('Access Token is valid. Token Info: ' + JSON.stringify(tokenInfo));
+  })
+  .catch(error => {
+    console.error('Error validating access token:', error);
+    alert('Access Token is invalid. Please re-authenticate.');
+  });
+
+
+
+
+
+
+    
   } else {
     alert('No access token available. Please authenticate first.');
   }
