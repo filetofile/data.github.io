@@ -18,7 +18,7 @@
 </head>
 <body>
 
-<button class="auth-btn" onclick="authenticateWithBlogger()">Authenticate with Blogger</button>
+<button class="auth-btn" onclick="authenticateWithBlogger()">Authenticate with Bloggerv2</button>
 
 <script>
   function authenticateWithBlogger() {
@@ -30,15 +30,22 @@
 
     const authWindow = window.open(authUrl, '_blank');
 
-    window.addEventListener('message', (event) => {
-      if (event.origin === redirectUri && event.data.includes('code')) {
-        const authorizationCode = event.data.split('=')[1];
-        console.log('Authorization Code:', authorizationCode);
+    
 
-        // يمكنك هنا استخدام رمز التصريح لاسترجاع التوكينات الوصول والوصول إلى Blogger API
-        // يجب تنفيذ الخطوات الإضافية لإدارة التوكينات بشكل أمثل
-      }
-    });
+window.addEventListener('load', () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const authorizationCode = urlParams.get('code');
+
+  if (authorizationCode) {
+    console.log('Authorization Code:', authorizationCode);
+
+    // يمكنك هنا استخدام رمز التصريح لاسترجاع التوكينات الوصول والوصول إلى Blogger API
+    // يجب تنفيذ الخطوات الإضافية لإدارة التوكينات بشكل أمثل
+  } else {
+    console.log('No authorization code found in the URL.');
+  }
+});
+
   }
 </script>
 
