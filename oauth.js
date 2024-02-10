@@ -1,4 +1,4 @@
-var REDIRECT = "&redirect_uri=https://filetofile.github.io/data.github.io/blogger.html";
+var REDIRECT = "&redirect_uri=https://filetofile.github.io";
 var PATH = window.PATH;
 if (!PATH) {
 	var hash = location.hash;
