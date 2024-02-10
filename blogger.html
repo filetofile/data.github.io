@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html class="expand">
+<head>
+	<meta charset="utf-8"/>
+	<title>Blogger</title>
+	<link rel="stylesheet" href="style.css"/>
+</head>
+<body style="height: 100%; margin: 0px">
+	<div class="control">
+		<div>
+			<button onclick="authorize(function(){alert('Completed');})">Authorize</button>
+			<button onclick="listBlogs()">Blogs</button>
+			<select id="blogs" class="control"></select>
+		</div>
+		<div>
+			<button onclick="listPosts(true)">All</button>
+<!--
+			<button onclick="listPosts(false)">Draft</button>
+-->
+			<select id="posts" class="control"></select>
+			<input style="width:50%" id="search"/>
+			<button onclick="searchPosts()">Search</button>
+		</div>
+	</div>
+	<div class="control">
+		<button onclick="loadPost()">Load</button>
+		<button onclick="publish()">Publish</button>
+		<button onclick="unpublish()">Unpublish</button>
+		<button onclick="delPost()">Delete</button>
+		<button onclick="newPost()">New Post</button>
+		<button onclick="update()">Update</button>
+	</div>
+	<div class="remainder">
+		<div class="expand">
+			<input id="title" class="textline"/>
+			<textarea id="input" class="remainder"></textarea>
+			<input id="labels" class="textline" maxlength="200"/>
+		</div>
+		<div id="preview" class="expand scroll">
+		</div>
+	</div>
+	<script src="util.js"></script>
+	<script src="blogger.js"></script>
+</body>
+</html>
