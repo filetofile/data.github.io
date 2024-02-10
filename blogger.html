@@ -18,16 +18,19 @@
 </head>
 <body>
 
-<button class="auth-btn" onclick="authenticateWithBlogger()">Authenticate with Bloggerv5</button>
+<button class="auth-btn" onclick="authenticateWithBlogger()">Authenticate with Bloggerv6</button>
 
 <script>
-  function authenticateWithBlogger() {
-    const clientId = '292101494800-n9be285nbq7m3kds9h3ursb9sa9d06a5.apps.googleusercontent.com';
+
+
+  const clientId = '292101494800-n9be285nbq7m3kds9h3ursb9sa9d06a5.apps.googleusercontent.com';
     const redirectUri = 'https://filetofile.github.io/data.github.io/blogger.html';
     const scope = 'https://www.googleapis.com/auth/blogger';
 
     const authUrl = `https://accounts.google.com/o/oauth2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}&response_type=code`;
 
+  function authenticateWithBlogger() {
+    
     const authWindow = window.open(authUrl, '_self');
 
     
@@ -44,6 +47,50 @@ window.addEventListener('load', () => {
   if (authorizationCode) {
     console.log('Authorization Code:', authorizationCode);
 
+
+
+
+
+
+
+
+
+    
+const clientSecret = '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';
+const authorizationCode = authorizationCode; // قم بتعويضه برمز التصريح الذي حصلت عليه
+
+// تبديل رمز التصريح بتوكين الوصول
+fetch('https://oauth2.googleapis.com/token', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/x-www-form-urlencoded',
+  },
+  body: `code=${authorizationCode}&client_id=${clientId}&client_secret=${clientSecret}&redirect_uri=${redirectUri}&grant_type=authorization_code`,
+})
+  .then(response => response.json())
+  .then(data => {
+    const accessToken = data.access_token;
+    const refreshToken = data.refresh_token;
+
+    console.log('Access Token:', accessToken);
+    console.log('Refresh Token:', refreshToken);
+
+    // يمكنك استخدام accessToken للوصول إلى Blogger API
+    // يجب تنفيذ الخطوات الإضافية لإدارة التوكينات بشكل أمثل
+  })
+  .catch(error => console.error('Error exchanging authorization code for tokens:', error));
+
+
+
+
+
+
+
+
+
+
+
+    
     // يمكنك هنا استخدام رمز التصريح لاسترجاع التوكينات الوصول والوصول إلى Blogger API
     // يجب تنفيذ الخطوات الإضافية لإدارة التوكينات بشكل أمثل
   } else {
