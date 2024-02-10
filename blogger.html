@@ -24,36 +24,51 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/oauth-signature-js/3.0.0/oauth-signature.min.js"></script>
   <script>
-    const CLIENT_ID = '292101494800-n9be285nbq7m3kds9h3ursb9sa9d06a5.apps.googleusercontent.com';
-    const CLIENT_SECRET = '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';
-    const REDIRECT_URI = 'https://filetofile.github.io/data.github.io/blogger.html';
-    const BLOGGER_API = 'https://www.googleapis.com/blogger/v3';
+    var store = {};
+    var handler = {};
+
+    ["ClientId", "User", "Token", "Expiry", "Scope"].forEach(function (key) {
+        handler[key] = {
+            get: function () {
+                return localStorage[key];
+            },
+            set: function (value) {
+                localStorage[key] = value;
+            }
+        };
+    });
+
+    Object.defineProperties(store, handler);
+
+    function expired() {
+        return !store.Expiry || (new Date().getTime() - store.Expiry >= 0);
+    }
 
     function authorize() {
-      const oauth = OAuth2.init({
-        clientId: CLIENT_ID,
-        clientSecret: CLIENT_SECRET,
-        redirectUri: REDIRECT_URI,
-        scope: 'https://www.googleapis.com/auth/blogger',
-      });
+        const oauth = OAuth2.init({
+            clientId: store.ClientId,
+            clientSecret: store.ClientSecret,
+            redirectUri: store.RedirectUri,
+            scope: store.Scope,
+        });
 
-      oauth.getToken(handleToken);
+        oauth.getToken(handleToken);
     }
 
     function handleToken(token) {
-      console.log('Access Token:', token.access_token);
+        console.log('Access Token:', token.access_token);
 
-      fetch(`${BLOGGER_API}/users/self/blogs`, {
-        headers: {
-          Authorization: `Bearer ${token.access_token}`,
-        },
-      })
-        .then(response => response.json())
-        .then(data => {
-          console.log('User Blogs:', data);
-          alert('Check the console for the list of user blogs.');
+        fetch(`https://www.googleapis.com/blogger/v3/users/self/blogs`, {
+            headers: {
+                Authorization: `Bearer ${token.access_token}`,
+            },
         })
-        .catch(error => console.error('Error fetching user blogs:', error));
+            .then(response => response.json())
+            .then(data => {
+                console.log('User Blogs:', data);
+                alert('Check the console for the list of user blogs.');
+            })
+            .catch(error => console.error('Error fetching user blogs:', error));
     }
   </script>
 </body>
