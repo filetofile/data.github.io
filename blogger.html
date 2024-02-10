@@ -3,73 +3,44 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Blogger API Integration</title>
+  <title>Blogger API Authentication</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      margin: 20px;
+      text-align: center;
     }
-
-    button {
-      padding: 10px;
-      margin-top: 10px;
+    .auth-btn {
+      padding: 10px 20px;
+      font-size: 16px;
       cursor: pointer;
     }
   </style>
 </head>
 <body>
 
-  <h1>Blogger API Integration</h1>
-  <button onclick="authorize()">Authorize</button>
+<button class="auth-btn" onclick="authenticateWithBlogger()">Authenticate with Blogger</button>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/oauth-signature-js/3.0.0/oauth-signature.min.js"></script>
-  <script>
-    var store = {};
-    var handler = {};
+<script>
+  function authenticateWithBlogger() {
+    const clientId = '292101494800-n9be285nbq7m3kds9h3ursb9sa9d06a5.apps.googleusercontent.com';
+    const redirectUri = 'https://filetofile.github.io/data.github.io/blogger.html';
+    const scope = 'https://www.googleapis.com/auth/blogger';
 
-    ["ClientId", "User", "Token", "Expiry", "Scope"].forEach(function (key) {
-        handler[key] = {
-            get: function () {
-                return localStorage[key];
-            },
-            set: function (value) {
-                localStorage[key] = value;
-            }
-        };
+    const authUrl = `https://accounts.google.com/o/oauth2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}&response_type=code`;
+
+    const authWindow = window.open(authUrl, '_blank');
+
+    window.addEventListener('message', (event) => {
+      if (event.origin === redirectUri && event.data.includes('code')) {
+        const authorizationCode = event.data.split('=')[1];
+        console.log('Authorization Code:', authorizationCode);
+
+        // يمكنك هنا استخدام رمز التصريح لاسترجاع التوكينات الوصول والوصول إلى Blogger API
+        // يجب تنفيذ الخطوات الإضافية لإدارة التوكينات بشكل أمثل
+      }
     });
+  }
+</script>
 
-    Object.defineProperties(store, handler);
-
-    function expired() {
-        return !store.Expiry || (new Date().getTime() - store.Expiry >= 0);
-    }
-
-    function authorize() {
-        const oauth = OAuth2.init({
-            clientId: store.ClientId,
-            clientSecret: store.ClientSecret,
-            redirectUri: store.RedirectUri,
-            scope: store.Scope,
-        });
-
-        oauth.getToken(handleToken);
-    }
-
-    function handleToken(token) {
-        console.log('Access Token:', token.access_token);
-
-        fetch(`https://www.googleapis.com/blogger/v3/users/self/blogs`, {
-            headers: {
-                Authorization: `Bearer ${token.access_token}`,
-            },
-        })
-            .then(response => response.json())
-            .then(data => {
-                console.log('User Blogs:', data);
-                alert('Check the console for the list of user blogs.');
-            })
-            .catch(error => console.error('Error fetching user blogs:', error));
-    }
-  </script>
 </body>
 </html>
