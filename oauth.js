@@ -1,4 +1,4 @@
-var REDIRECT = "&redirect_uri=http://127.0.0.1/blogger/oauth.html";
+var REDIRECT = "&redirect_uri=https://filetofile.github.io/data.github.io/oauth.html";
 var PATH = window.PATH;
 if (!PATH) {
 	var hash = location.hash;
