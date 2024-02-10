@@ -18,7 +18,7 @@
 </head>
 <body>
 
-<button class="auth-btn" onclick="authenticateWithBlogger()">Authenticate with Bloggerv10</button>
+<button class="auth-btn" onclick="authenticateWithBlogger()">Authenticate with Bloggerv11</button>
 
 <script>
 
@@ -37,9 +37,15 @@ function validateAccessToken() {
     fetch('https://www.googleapis.com/oauth2/v1/userinfo', {
       headers: {
         'Authorization': `Bearer ${accessToken}`,
+        'Content-Type': 'application/json', // قد تكون هناك حاجة إلى إضافة هذا الرأس
       },
     })
-      .then(response => response.json())
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+      })
       .then(userInfo => {
         console.log('User Info:', userInfo);
         alert('Access Token is valid. User Info: ' + JSON.stringify(userInfo));
