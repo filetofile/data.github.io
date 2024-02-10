@@ -18,7 +18,7 @@
 </head>
 <body>
 
-<button class="auth-btn" onclick="authenticateWithBlogger()">Authenticate with Bloggerv2</button>
+<button class="auth-btn" onclick="authenticateWithBlogger()">Authenticate with Bloggerv3</button>
 
 <script>
   function authenticateWithBlogger() {
@@ -32,7 +32,7 @@
 
     
 
-window.addEventListener('load', () => {
+//window.addEventListener('load', () => {
   const urlParams = new URLSearchParams(window.location.search);
   const authorizationCode = urlParams.get('code');
 
@@ -44,7 +44,7 @@ window.addEventListener('load', () => {
   } else {
     console.log('No authorization code found in the URL.');
   }
-});
+//});
 
   }
 </script>
