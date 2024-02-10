@@ -18,7 +18,7 @@
 </head>
 <body>
 
-<button class="auth-btn" onclick="authenticateWithBlogger()">Authenticate with Bloggerv3</button>
+<button class="auth-btn" onclick="authenticateWithBlogger()">Authenticate with Bloggerv4</button>
 
 <script>
   function authenticateWithBlogger() {
@@ -28,7 +28,7 @@
 
     const authUrl = `https://accounts.google.com/o/oauth2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}&response_type=code`;
 
-    const authWindow = window.open(authUrl, '_blank');
+    const authWindow = window.open(authUrl, '_self');
 
     
 
