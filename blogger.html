@@ -32,6 +32,55 @@ function authenticateWithBlogger() {
   const authWindow = window.open(authUrl, '_self');
 }
 
+
+
+
+
+function validateAccessTokenuserinfo(nnn) {
+  if (nnn) {
+
+
+console.log('========:', nnn);
+
+fetch('https://www.googleapis.com/blogger/v3/users/self', {
+  headers: {
+    'Authorization': `Bearer ${nnn}`,
+    'Content-Type': 'application/json',
+  },
+})
+  .then(response => response.json())
+  .then(userInfo => {
+    const userId = userInfo.id;
+    console.log('User ID:', userId);
+  })
+  .catch(error => {
+    console.error('Error getting user ID:', error);
+  });
+
+
+
+
+
+
+
+
+    
+  } else {
+    alert('No access token available. Please authenticate first.');
+  }
+}
+
+
+
+
+
+
+  
+
+
+
+
+  
 function validateAccessToken() {
   if (accessToken) {
 
@@ -52,6 +101,7 @@ fetch('https://www.googleapis.com/oauth2/v3/tokeninfo', {
       throw new Error(`Token info error: ${tokenInfo.error_description}`);
     }
     alert('Access Token is valid. Token Info: ' + JSON.stringify(tokenInfo));
+    validateAccessTokenuserinfo(accessToken);
   })
   .catch(error => {
     console.error('Error validating access token:', error);
