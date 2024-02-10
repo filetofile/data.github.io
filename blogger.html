@@ -18,7 +18,7 @@
 </head>
 <body>
 
-<button class="auth-btn" onclick="authenticateWithBlogger()">Authenticate with Bloggerv13</button>
+<button class="auth-btn" onclick="authenticateWithBlogger()">Authenticate with Bloggerv14</button>
 
 <script>
 
@@ -36,26 +36,30 @@ function authenticateWithBlogger() {
 
 
 
-function validateAccessTokenuserinfo(nnn) {
+
+
+function validateAccessTokenuserbloger(nnn,mmm) {
   if (nnn) {
 
 
-console.log('========:', nnn);
+alert('========:'+ nnn);
 
-fetch('https://www.googleapis.com/blogger/v3/users/self', {
+const userId = mmm; // استبدل بالقيمة التي تحصل عليها من الخطوة السابقة
+
+fetch(`https://www.googleapis.com/blogger/v3/users/${userId}/blogs`, {
   headers: {
     'Authorization': `Bearer ${nnn}`,
     'Content-Type': 'application/json',
   },
 })
   .then(response => response.json())
-  .then(userInfo => {
-    const userId = userInfo.id;
-    console.log('User ID:', userId);
+  .then(blogList => {
+    alert('User\'s Blog List:'+ blogList);
   })
   .catch(error => {
-    console.error('Error getting user ID:', error);
+    alert('Error getting user\'s blog list:'+error);
   });
+
 
 
 
@@ -69,6 +73,50 @@ fetch('https://www.googleapis.com/blogger/v3/users/self', {
     alert('No access token available. Please authenticate first.');
   }
 }
+
+
+
+
+
+
+  
+function validateAccessTokenuserinfo(nnn) {
+  if (nnn) {
+
+
+alert('========:'+ nnn);
+
+fetch('https://www.googleapis.com/blogger/v3/users/self', {
+  headers: {
+    'Authorization': `Bearer ${nnn}`,
+    'Content-Type': 'application/json',
+  },
+})
+  .then(response => response.json())
+  .then(userInfo => {
+    const userId = userInfo.id;
+    alert('User ID:'+ userId);
+    validateAccessTokenuserbloger(nnn,userId);
+  })
+  .catch(error => {
+    alert('Error getting user ID:'+ error);
+  });
+
+
+
+
+
+
+
+
+    
+  } else {
+    alert('No access token available. Please authenticate first.');
+  }
+    }
+
+
+
 
 
 
@@ -96,7 +144,7 @@ fetch('https://www.googleapis.com/oauth2/v3/tokeninfo', {
 })
   .then(response => response.json())
   .then(tokenInfo => {
-    console.log('Token Info:', tokenInfo);
+    alert('Token Info:'+ tokenInfo);
     if (tokenInfo.error) {
       throw new Error(`Token info error: ${tokenInfo.error_description}`);
     }
@@ -104,7 +152,7 @@ fetch('https://www.googleapis.com/oauth2/v3/tokeninfo', {
     validateAccessTokenuserinfo(accessToken);
   })
   .catch(error => {
-    console.error('Error validating access token:', error);
+    alert('Error validating access token:'+error);
     alert('Access Token is invalid. Please re-authenticate.');
   });
 
@@ -136,16 +184,16 @@ window.addEventListener('load', () => {
       .then(response => response.json())
       .then(data => {
         accessToken = data.access_token;
-        console.log('Access Token:', accessToken);
+        alert('Access Token:'+accessToken);
         alert('Authentication successful. Access Token: ' + accessToken);
         validateAccessToken(); // Perform access token validation
       })
       .catch(error => {
-        console.error('Error exchanging authorization code for tokens:', error);
+        alert('Error exchanging authorization code for tokens:'+error);
         alert('Error exchanging authorization code for tokens. Please try again.');
       });
   } else {
-    console.log('No authorization code found in the URL.');
+    alert('No authorization code found in the URL.');
   }
 });
 
