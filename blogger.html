@@ -18,7 +18,7 @@
 </head>
 <body>
 
-<button class="auth-btn" onclick="authenticateWithBlogger()">Authenticate with Bloggerv15</button>
+<button class="auth-btn" onclick="authenticateWithBlogger()">Authenticate with Bloggerv16</button>
 
 <script>
 
@@ -59,7 +59,7 @@ fetch(`https://www.googleapis.com/blogger/v3/blogs`, {
   },
   body: JSON.stringify({
     kind: 'blogger#blog',
-    name: 'mimi';
+    name: 'mimi'
   }),
 })
   .then(response => response.json())
