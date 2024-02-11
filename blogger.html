@@ -18,7 +18,7 @@
 </head>
 <body>
 
-<button class="auth-btn" onclick="authenticateWithBlogger()">Authenticate with Bloggerv39</button>
+<button class="auth-btn" onclick="authenticateWithBlogger()">Authenticate with Bloggerv40</button>
 <input type="file" id="imageInput" accept="image/*">
 <button onclick="checkAndCreateOrUpdatePost()">رفع الصورة</button>
 
@@ -255,7 +255,7 @@ const postContent = 'محتوى المنشور';
 
 // الجزء الخاص بإنشاء المنشور
 fetch(`https://www.googleapis.com/blogger/v3/blogs/${targetBlogId}/posts`, {
-  method: 'POST',
+  method: 'PUT',
   headers: {
     'Authorization': `Bearer ${accessToken}`,
     'Content-Type': 'application/json',
