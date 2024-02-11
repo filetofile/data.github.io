@@ -93,9 +93,7 @@ async function createPost(targetBlogId, accessToken, postTitle, postContent, ima
     const result = await response.json();
     const imageUrl = result.images[0].url;
     console.log('Image uploaded successfully. Image URL:', imageUrl);
-  } catch (error) {
-    console.error('Error uploading image:', error.message);
-  }
+
 
 
 
