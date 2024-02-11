@@ -18,7 +18,7 @@
 </head>
 <body>
 
-<button class="auth-btn" onclick="authenticateWithBlogger()">Authenticate with Bloggerv42</button>
+<button class="auth-btn" onclick="authenticateWithBlogger()">Authenticate with Bloggerv43</button>
 <input type="file" id="imageInput" accept="image/*">
 <button onclick="checkAndCreateOrUpdatePost()">رفع الصورة</button>
 
@@ -230,7 +230,54 @@ function checkAndCreateOrUpdatePost() {
 
   
   
+/*
+const API_KEY = 'YOUR_API_KEY';
+const BLOG_ID = 'YOUR_BLOG_ID';
+const accessToken = 'YOUR_ACCESS_TOKEN'; // Ensure you have the correct access token
 
+const url = `https://www.googleapis.com/blogger/v3/blogs/${BLOG_ID}/posts`;
+const headers = {
+  'Authorization': `Bearer ${accessToken}`,
+  'Content-Type': 'application/json'
+};
+
+const requestBody = {
+  "content": "<p>&nbsp;niaDjdhhhhhhhhhudyhazjkz</p>",
+  "title": "",
+  "images": [
+    {
+      "url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXY2Bg+P8fAAMCAf/Jsq3uAAAAAElFTkSuQmCC",
+      "isDraft": true
+    }
+  ]
+};
+
+fetch(url, {
+  method: 'POST',
+  headers: {
+    'Authorization': `Bearer ${accessToken}`,
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify(requestBody),
+})
+  .then(response => {
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    return response.json();
+  })
+  .then(data => {
+    console.log(data);
+    // Handle the response here
+  })
+  .catch(error => {
+    console.error('Error:', error.message);
+  });
+
+
+
+
+*/
 
 
 
@@ -244,6 +291,65 @@ function checkAndCreateOrUpdatePost() {
 function validateAccessTokenuserpost(nnn,mmm) {
   
 
+
+
+
+
+
+
+
+
+
+const url = `https://www.googleapis.com/blogger/v3/blogs/4165156656721311842/posts`;
+const headers = {
+  'Authorization': `Bearer ${accessToken}`,
+  'Content-Type': 'application/json'
+};
+
+const requestBody = {
+  "content": "<p>&nbsp;niaDjdhhhhhhhhhudyhazjkz</p>",
+  "title": "",
+  "images": [
+    {
+      "url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXY2Bg+P8fAAMCAf/Jsq3uAAAAAElFTkSuQmCC",
+      "isDraft": true
+    }
+  ]
+};
+
+fetch(url, {
+  method: 'POST',
+  headers: {
+    'Authorization': `Bearer ${accessToken}`,
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify(requestBody),
+})
+  .then(response => {
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    return response.json();
+  })
+  .then(data => {
+    console.log(data);
+    // Handle the response here
+  })
+  .catch(error => {
+    console.error('Error:', error.message);
+  });
+
+
+
+
+
+
+
+
+
+
+
+  /*
 const targetBlogId = mmm;
 const accessToken = nnn; 
 
@@ -274,7 +380,7 @@ fetch(`https://www.googleapis.com/blogger/v3/blogs/${targetBlogId}/posts`, {
     console.error('Error creating post:', error);
   });
 
-
+*/
 
 
 
