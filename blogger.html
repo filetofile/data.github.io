@@ -18,7 +18,7 @@
 </head>
 <body>
 
-<button class="auth-btn" onclick="authenticateWithBlogger()">Authenticate with Bloggerv16</button>
+<button class="auth-btn" onclick="authenticateWithBlogger()">Authenticate with Bloggerv17</button>
 
 <script>
 
@@ -49,9 +49,10 @@ function validateAccessTokencreatbloger(nnn,mmm)
 {
 
 
-const userId = mmm; // استبدل بالقيمة التي تحصل عليها من الخطوة السابقة
+const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+const apiUrl = 'https://www.googleapis.com/blogger/v3/blogs';
 
-fetch(`https://www.googleapis.com/blogger/v3/blogs`, {
+fetch(proxyUrl + apiUrl, {
   method: 'POST',
   headers: {
     'Authorization': `Bearer ${nnn}`,
@@ -59,16 +60,17 @@ fetch(`https://www.googleapis.com/blogger/v3/blogs`, {
   },
   body: JSON.stringify({
     kind: 'blogger#blog',
-    name: 'mimi'
+    name: 'mimi',
   }),
 })
   .then(response => response.json())
   .then(createdBlog => {
-    alert('Created Blog:'+ createdBlog);
+    console.log('Created Blog:', createdBlog);
   })
   .catch(error => {
-    alert('Error creating blog:'+ error);
+    console.error('Error creating blog:', error);
   });
+
 
 
 
