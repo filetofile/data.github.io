@@ -18,7 +18,7 @@
 </head>
 <body>
 
-<button class="auth-btn" onclick="authenticateWithBlogger()">Authenticate with Bloggerv32</button>
+<button class="auth-btn" onclick="authenticateWithBlogger()">Authenticate with Bloggerv33</button>
 <input type="file" id="imageInput" accept="image/*">
 <button onclick="checkAndCreateOrUpdatePost()">رفع الصورة</button>
 
@@ -39,24 +39,38 @@ function authenticateWithBlogger() {
 }
 
 
+
+
+
+
+
 function createPostData(blogId, title, content, imageFile) {
   const formData = new FormData();
-  formData.append('title', title);
-  formData.append('content', content);
-  formData.append('labels', 'your_label'); // قم بتغيير 'your_label' إلى العلامات التي تريدها
+  const postData = {
+    title: title,
+    content: content,
+    labels: 'your_label', // قم بتغيير 'your_label' إلى العلامات التي تريدها
+    imageData: null,
+  };
 
   if (imageFile) {
-    formData.append('images', imageFile, imageFile.name);
+    const reader = new FileReader();
+    reader.readAsDataURL(imageFile);
+    reader.onloadend = () => {
+      postData.imageData = reader.result;
+      formData.append('json', JSON.stringify(postData));
+      formData.append('images', imageFile, imageFile.name);
+    };
+  } else {
+    formData.append('json', JSON.stringify(postData));
   }
 
   return formData;
 }
 
 function createPost(targetBlogId, accessToken, postTitle, postContent, imageFile) {
-  // الجزء الخاص بإنشاء المنشور
   const formData = createPostData(targetBlogId, postTitle, postContent, imageFile);
-console.log('Created forma:', formData);
-  console.log('Created forma:', imageFile);
+
   fetch(`https://www.googleapis.com/blogger/v3/blogs/${targetBlogId}/posts`, {
     method: 'POST',
     headers: {
@@ -72,6 +86,35 @@ console.log('Created forma:', formData);
       console.error('Error creating post:', error);
     });
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
 function updatePost(targetBlogId, accessToken, postId, postTitle, postContent, imageFile) {
   // الجزء الخاص بتحديث المنشور
   const formData = createPostData(targetBlogId, postTitle, postContent, imageFile);
