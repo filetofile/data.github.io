@@ -18,7 +18,7 @@
 </head>
 <body>
 
-<button class="auth-btn" onclick="authenticateWithBlogger()">Authenticate with Bloggerv18</button>
+<button class="auth-btn" onclick="authenticateWithBlogger()">Authenticate with Bloggerv19</button>
 
 <script>
 
@@ -118,16 +118,16 @@ fetch(`https://www.googleapis.com/blogger/v3/blogs/byurl?url=${userId}/blogs/${e
       return response.json();
     } else {
       // إذا كان الرد غير ناجح، يعني أن المدونة غير موجودة
-      alert('Blog not found');
+      console.log('Blog not found');
       validateAccessTokencreatbloger(nnn,mmm);
     }
   })
   .then(existingBlog => {
-    alert('Existing Blog:'+existingBlog);
+    console.log('Existing Blog:',existingBlog);
     // يمكنك إجراء الإجراءات اللازمة إذا كانت المدونة موجودة
   })
   .catch(error => {
-    alert('Error checking if blog exists:' + error);
+    console.log('Error checking if blog exists:' ,error);
     // يمكنك إجراء الإجراءات اللازمة إذا كانت المدونة غير موجودة
   });
 
@@ -156,7 +156,7 @@ function validateAccessTokenuserbloger(nnn,mmm) {
   if (nnn) {
 
 
-alert('========:'+ nnn);
+console.log('========:',nnn);
 
 const userId = mmm; // استبدل بالقيمة التي تحصل عليها من الخطوة السابقة
 
@@ -168,11 +168,11 @@ fetch(`https://www.googleapis.com/blogger/v3/users/${userId}/blogs`, {
 })
   .then(response => response.json())
   .then(blogList => {
-    alert('User\'s Blog List:'+ blogList);
+    console.log('User\'s Blog List:', blogList);
     validateAccessTokencheckbloger(nnn,mmm);
   })
   .catch(error => {
-    alert('Error getting user\'s blog list:'+error);
+    console.log('Error getting user\'s blog list:',error);
   });
 
 
@@ -199,7 +199,7 @@ function validateAccessTokenuserinfo(nnn) {
   if (nnn) {
 
 
-alert('========:'+ nnn);
+console.log('========:',nnn);
 
 fetch('https://www.googleapis.com/blogger/v3/users/self', {
   headers: {
@@ -210,11 +210,12 @@ fetch('https://www.googleapis.com/blogger/v3/users/self', {
   .then(response => response.json())
   .then(userInfo => {
     const userId = userInfo.id;
-    alert('User ID:'+ userId);
+    console.log('User ID:', userId);
+    console.log('User userInfo ID:', userInfo);
     validateAccessTokenuserbloger(nnn,userId);
   })
   .catch(error => {
-    alert('Error getting user ID:'+ error);
+    console.log('Error getting user ID:' error);
   });
 
 
@@ -259,11 +260,11 @@ fetch('https://www.googleapis.com/oauth2/v3/tokeninfo', {
 })
   .then(response => response.json())
   .then(tokenInfo => {
-    alert('Token Info:'+ tokenInfo);
+    console.log('Token Info:', tokenInfo);
     if (tokenInfo.error) {
       throw new Error(`Token info error: ${tokenInfo.error_description}`);
     }
-    alert('Access Token is valid. Token Info: ' + JSON.stringify(tokenInfo));
+    console.log('Access Token is valid. Token Info: ' , JSON.stringify(tokenInfo));
     validateAccessTokenuserinfo(accessToken);
   })
   .catch(error => {
@@ -299,8 +300,8 @@ window.addEventListener('load', () => {
       .then(response => response.json())
       .then(data => {
         accessToken = data.access_token;
-        alert('Access Token:'+accessToken);
-        alert('Authentication successful. Access Token: ' + accessToken);
+        console.log('Access Token:',accessToken);
+        console.log('Authentication successful. Access Token: ' , accessToken);
         validateAccessToken(); // Perform access token validation
       })
       .catch(error => {
