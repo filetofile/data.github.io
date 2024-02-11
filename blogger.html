@@ -18,8 +18,14 @@
 </head>
 <body>
 
-<button class="auth-btn" onclick="authenticateWithBlogger()">Authenticate with Bloggerv27</button>
+<button class="auth-btn" onclick="authenticateWithBlogger()">Authenticate with Bloggerv28</button>
+<input type="file" id="imageInput" accept="image/*">
+<button onclick="checkAndCreateOrUpdatePost()">رفع الصورة</button>
 
+
+
+
+  
 <script>
 
 const clientId = '292101494800-n9be285nbq7m3kds9h3ursb9sa9d06a5.apps.googleusercontent.com';
@@ -33,11 +39,116 @@ function authenticateWithBlogger() {
 }
 
 
+function createPostData(blogId, title, content, imageFile) {
+  const formData = new FormData();
+  formData.append('title', title);
+  formData.append('content', content);
+  formData.append('labels', 'your_label'); // قم بتغيير 'your_label' إلى العلامات التي تريدها
+
+  if (imageFile) {
+    formData.append('images', imageFile, imageFile.name);
+  }
+
+  return formData;
+}
+
+function createPost(targetBlogId, accessToken, postTitle, postContent, imageFile) {
+  // الجزء الخاص بإنشاء المنشور
+  const formData = createPostData(targetBlogId, postTitle, postContent, imageFile);
+
+  fetch(`https://www.googleapis.com/blogger/v3/blogs/${targetBlogId}/posts`, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${accessToken}`,
+    },
+    body: formData,
+  })
+    .then(response => response.json())
+    .then(createdPost => {
+      console.log('Created Post:', createdPost);
+    })
+    .catch(error => {
+      console.error('Error creating post:', error);
+    });
+}
+function updatePost(targetBlogId, accessToken, postId, postTitle, postContent, imageFile) {
+  // الجزء الخاص بتحديث المنشور
+  const formData = createPostData(targetBlogId, postTitle, postContent, imageFile);
+
+  fetch(`https://www.googleapis.com/blogger/v3/blogs/${targetBlogId}/posts/${postId}`, {
+    method: 'PUT',
+    headers: {
+      'Authorization': `Bearer ${accessToken}`,
+    },
+    body: formData,
+  })
+    .then(response => response.json())
+    .then(updatedPost => {
+      console.log('Updated Post:', updatedPost);
+    })
+    .catch(error => {
+      console.error('Error updating post:', error);
+    });
+}
+
+function checkAndCreateOrUpdatePost() {
+  const imageInput = document.getElementById('imageInput');
+  const imageFile = imageInput.files[0];
+
+  const targetBlogId = '8046550092892039299'; // استبدل بالقيمة التي حصلت عليها
+  const accessToken = 'replace_with_actual_access_token'; // استبدل برمز الوصول الفعلي
+  const postTitle = 'عنوان المنشور';
+  const postContent = 'محتوى المنشور';
+
+  // طلب للتحقق من وجود المنشور وإجراء الإجراء المناسب
+  fetch(`https://www.googleapis.com/blogger/v3/blogs/${targetBlogId}/posts/search?q=${encodeURIComponent(postTitle)}`, {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${accessToken}`,
+    },
+  })
+.then(response => {
+      if (response.ok) {
+        // إذا كان الرد ناجحًا، يعني أن المنشور موجود
+        return response.json();
+      } else {
+        // إذا كان الرد غير ناجح، يعني أن المنشور غير موجود
+        console.log('Post not found');
+        createPost(targetBlogId, accessToken, postTitle, postContent, imageFile);
+      }
+    })
+    .then(existingPost => {
+      console.log('Existing Post:', existingPost);
+      // يمكنك إجراء الإجراءات اللازمة إذا كان المنشور موجود
+      updatePost(targetBlogId, accessToken, existingPost.id, postTitle, postContent, imageFile);
+    })
+    .catch(error => {
+      console.log('Error checking if post exists:', error);
+      // يمكنك إجراء الإجراءات اللازمة إذا كان المنشور غير موجود
+      createPost(targetBlogId, accessToken, postTitle, postContent, imageFile);
+    });
+}
 
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
 
 
 
