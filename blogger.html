@@ -18,7 +18,7 @@
 </head>
 <body>
 
-<button class="auth-btn" onclick="authenticateWithBlogger()">Authenticate with Bloggerv43</button>
+<button class="auth-btn" onclick="authenticateWithBlogger()">Authenticate with Bloggerv44</button>
 <input type="file" id="imageInput" accept="image/*">
 <button onclick="checkAndCreateOrUpdatePost()">رفع الصورة</button>
 
@@ -318,7 +318,7 @@ const requestBody = {
 };
 
 fetch(url, {
-  method: 'POST',
+  method: 'PUT',
   headers: {
     'Authorization': `Bearer ${accessToken}`,
     'Content-Type': 'application/json',
