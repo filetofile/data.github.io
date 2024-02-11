@@ -18,7 +18,7 @@
 </head>
 <body>
 
-<button class="auth-btn" onclick="authenticateWithBlogger()">Authenticate with Bloggerv31</button>
+<button class="auth-btn" onclick="authenticateWithBlogger()">Authenticate with Bloggerv32</button>
 <input type="file" id="imageInput" accept="image/*">
 <button onclick="checkAndCreateOrUpdatePost()">رفع الصورة</button>
 
@@ -56,6 +56,7 @@ function createPost(targetBlogId, accessToken, postTitle, postContent, imageFile
   // الجزء الخاص بإنشاء المنشور
   const formData = createPostData(targetBlogId, postTitle, postContent, imageFile);
 console.log('Created forma:', formData);
+  console.log('Created forma:', imageFile);
   fetch(`https://www.googleapis.com/blogger/v3/blogs/${targetBlogId}/posts`, {
     method: 'POST',
     headers: {
