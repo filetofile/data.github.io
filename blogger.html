@@ -18,7 +18,7 @@
 </head>
 <body>
 
-<button class="auth-btn" onclick="authenticateWithBlogger()">Authenticate with Bloggerv29</button>
+<button class="auth-btn" onclick="authenticateWithBlogger()">Authenticate with Bloggerv30</button>
 <input type="file" id="imageInput" accept="image/*">
 <button onclick="checkAndCreateOrUpdatePost()">رفع الصورة</button>
 
@@ -120,7 +120,11 @@ function checkAndCreateOrUpdatePost() {
     .then(existingPost => {
       console.log('Existing Post:', existingPost);
       // يمكنك إجراء الإجراءات اللازمة إذا كان المنشور موجود
-      updatePost(targetBlogId, accessToken, existingPost.id, postTitle, postContent, imageFile);
+      //updatePost(targetBlogId, accessToken, existingPost.id, postTitle, postContent, imageFile);
+  createPost(targetBlogId, accessToken, postTitle, postContent, imageFile);
+
+    
+    
     })
     .catch(error => {
       console.log('Error checking if post exists:', error);
