@@ -18,7 +18,7 @@
 </head>
 <body>
 
-<button class="auth-btn" onclick="authenticateWithBlogger()">Authenticate with Bloggerv41</button>
+<button class="auth-btn" onclick="authenticateWithBlogger()">Authenticate with Bloggerv42</button>
 <input type="file" id="imageInput" accept="image/*">
 <button onclick="checkAndCreateOrUpdatePost()">رفع الصورة</button>
 
@@ -244,16 +244,13 @@ function checkAndCreateOrUpdatePost() {
 function validateAccessTokenuserpost(nnn,mmm) {
   
 
-
-// استبدل targetBlogId بالقيمة التي حصلت عليها
 const targetBlogId = mmm;
-const accessToken = nnn; // استبدل برمز الوصول الفعلي
+const accessToken = nnn; 
 
-// تعريف بيانات المنشور الذي تريد إنشاءه
-const postTitle = 'عنوان المنشور';
-const postContent = 'محتوى المنشور';
+  const postTitle = '6gygg';
+const postContent = 'azer';
 
-// الجزء الخاص بإنشاء المنشور
+// ط§ظ„ط¬ط²ط، ط§ظ„ط®ط§طµ ط¨ط¥ظ†ط´ط§ط، ط§ظ„ظ…ظ†ط´ظˆط±
 fetch(`https://www.googleapis.com/blogger/v3/blogs/${targetBlogId}/posts`, {
   method: 'POST',
   headers: {
@@ -282,9 +279,6 @@ fetch(`https://www.googleapis.com/blogger/v3/blogs/${targetBlogId}/posts`, {
 
 
 }
-
-
-
 
 
 
