@@ -18,7 +18,7 @@
 </head>
 <body>
 
-<button class="auth-btn" onclick="authenticateWithBlogger()">Authenticate with Bloggerv23</button>
+<button class="auth-btn" onclick="authenticateWithBlogger()">Authenticate with Bloggerv24</button>
 
 <script>
 
@@ -45,39 +45,6 @@ function authenticateWithBlogger() {
 
 
 
-function validateAccessTokencreatbloger(nnn,mmm) 
-{
-
-
-const apiKey = 'AIzaSyBR8ENhGiCc2b81b9djQSf7LBkD6X671qo';
-const apiUrl = `https://www.googleapis.com/blogger/v3/users/${mmm}/blogs?key=${apiKey}`;
-
-fetch( apiUrl, {
-  method: 'POST',
-  headers: {
-    'Authorization': `Bearer ${nnn}`,
-    'Content-Type': 'application/json',
-  },
-  body: JSON.stringify({
-    kind: 'blogger#blog',
-    name: 'mimi',
-  }),
-})
-  .then(response => response.json())
-  .then(createdBlog => {
-    console.log('Created Blog:', createdBlog);
-  })
-  .catch(error => {
-    console.error('Error creating blog:', error);
-  });
-
-
-
-
-
-  
-}
-
 
   
 
@@ -97,46 +64,6 @@ fetch( apiUrl, {
 
 
 
-
-function validateAccessTokencheckbloger(nnn,mmm) {
-
-
-
-const userId = mmm; // استبدل بالقيمة التي تحصل عليها من الخطوة السابقة
-const blogName = 'Azer'; 
-
-// طلب للتحقق من وجود المدونة
-fetch(`https://www.googleapis.com/blogger/v3/blogs/byurl?url=${userId}/blogs/${encodeURIComponent(blogName)}`, {
-  method: 'GET',
-  headers: {
-    'Authorization': `Bearer ${nnn}`,
-  },
-})
-  .then(response => {
-    if (response.ok) {
-      // إذا كان الرد ناجحًا، يعني أن المدونة موجودة
-      return response.json();
-    } else {
-      // إذا كان الرد غير ناجح، يعني أن المدونة غير موجودة
-      console.log('Blog not found');
-      validateAccessTokencreatbloger(nnn,mmm);
-    }
-  })
-  .then(existingBlog => {
-    console.log('Existing Blog:',existingBlog);
-    // يمكنك إجراء الإجراءات اللازمة إذا كانت المدونة موجودة
-  })
-  .catch(error => {
-    console.log('Error checking if blog exists:' ,error);
-    // يمكنك إجراء الإجراءات اللازمة إذا كانت المدونة غير موجودة
-  });
-
-
-
-
-
-  
-}
 
 
 
@@ -169,7 +96,6 @@ fetch(`https://www.googleapis.com/blogger/v3/users/${userId}/blogs`, {
   .then(response => response.json())
   .then(blogList => {
     console.log('User\'s Blog List:', blogList);
-    validateAccessTokencheckbloger(nnn,mmm);
   })
   .catch(error => {
     console.log('Error getting user\'s blog list:',error);
