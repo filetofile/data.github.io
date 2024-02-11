@@ -18,7 +18,7 @@
 </head>
 <body>
 
-<button class="auth-btn" onclick="authenticateWithBlogger()">Authenticate with Bloggerv19</button>
+<button class="auth-btn" onclick="authenticateWithBlogger()">Authenticate with Bloggerv20</button>
 
 <script>
 
@@ -50,9 +50,9 @@ function validateAccessTokencreatbloger(nnn,mmm)
 
 
 const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-const apiUrl = 'https://www.googleapis.com/blogger/v3/blogs';
+const apiUrl = 'https://www.googleapis.com/blogger/v3/users/${mmm}/blogs';
 
-fetch(proxyUrl + apiUrl, {
+fetch( apiUrl, {
   method: 'POST',
   headers: {
     'Authorization': `Bearer ${nnn}`,
