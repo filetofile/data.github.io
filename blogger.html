@@ -18,7 +18,7 @@
 </head>
 <body>
 
-<button class="auth-btn" onclick="authenticateWithBlogger()">Authenticate with Bloggerv26</button>
+<button class="auth-btn" onclick="authenticateWithBlogger()">Authenticate with Bloggerv27</button>
 
 <script>
 
@@ -49,7 +49,47 @@ function authenticateWithBlogger() {
   
 
 
+function validateAccessTokenuserpost(nnn,mmm) {
+  
 
+
+// استبدل targetBlogId بالقيمة التي حصلت عليها
+const targetBlogId = mmm;
+const accessToken = nnn; // استبدل برمز الوصول الفعلي
+
+// تعريف بيانات المنشور الذي تريد إنشاءه
+const postTitle = 'عنوان المنشور';
+const postContent = 'محتوى المنشور';
+
+// الجزء الخاص بإنشاء المنشور
+fetch(`https://www.googleapis.com/blogger/v3/blogs/${targetBlogId}/posts`, {
+  method: 'POST',
+  headers: {
+    'Authorization': `Bearer ${accessToken}`,
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    kind: 'blogger#post',
+    blog: {
+      id: targetBlogId,
+    },
+    title: postTitle,
+    content: postContent,
+  }),
+})
+  .then(response => response.json())
+  .then(createdPost => {
+    console.log('Created Post:', createdPost);
+  })
+  .catch(error => {
+    console.error('Error creating post:', error);
+  });
+
+
+
+
+
+}
 
 
 
@@ -105,6 +145,9 @@ const nameToSearch = 'Azer';
 
     if (targetBlog) {
       console.log('Target Blog ID:', targetBlog.id);
+
+validateAccessTokenuserpost(nnn,targetBlog.id);
+      
     } else {
       console.log('No blog found with the specified name.');
     }
