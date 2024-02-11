@@ -18,7 +18,7 @@
 </head>
 <body>
 
-<button class="auth-btn" onclick="authenticateWithBlogger()">Authenticate with Bloggerv24</button>
+<button class="auth-btn" onclick="authenticateWithBlogger()">Authenticate with Bloggerv25</button>
 
 <script>
 
@@ -96,6 +96,21 @@ fetch(`https://www.googleapis.com/blogger/v3/users/${userId}/blogs`, {
   .then(response => response.json())
   .then(blogList => {
     console.log('User\'s Blog List:', blogList);
+
+
+
+
+
+    const targetBlog = blogList.items.find(blog => blog.name === nameToSearch);
+
+    if (targetBlog) {
+      console.log('Target Blog ID:', targetBlog.id);
+    } else {
+      console.log('No blog found with the specified name.');
+    }
+
+
+    
   })
   .catch(error => {
     console.log('Error getting user\'s blog list:',error);
