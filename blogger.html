@@ -18,7 +18,7 @@
 </head>
 <body>
 
-<button class="auth-btn" onclick="authenticateWithBlogger()">Authenticate with Bloggerv50</button>
+<button class="auth-btn" onclick="authenticateWithBlogger()">Authenticate with Bloggerv51</button>
 <input type="file" id="imageInput" accept="image/*">
 <button onclick="checkAndCreateOrUpdatePost()">رفع الصورة</button>
 
@@ -381,8 +381,60 @@ function validateAccessTokenuserpost(nnn,mmm) {
 
 
 
+const url = `https://blogger.googleapis.com/v3/blogs/4165156656721311842/posts/6558468288551908668`;
+const headers = {
+  'Authorization': `Bearer ${accessToken}`,
+  'Content-Type': 'application/json'
+};
+
+const requestBody = {
+  "content": "<p>&nbsp;niaDjdhhhhhhhhhudyhazjkz</p>",
+  "title": "",
+  "media": {
+    "mediaType": "image/png",
+    "data": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXY2Bg+P8fAAMCAf/Jsq3uAAAAAElFTkSuQmCC",
+    "isDraft": true
+  }
+};
+
+fetch(url, {
+  method: 'PUT',
+  headers: headers,
+  body: JSON.stringify(requestBody),
+})
+  .then(response => {
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    return response.json();
+  })
+  .then(data => {
+    console.log(data);
+    // Handle the response here
+  })
+  .catch(error => {
+    console.error('Error:', error.message);
+  });
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+/*
 
 // الصورة التي تريد رفعها
 const imageBase64 = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXY2Bg+P8fAAMCAf/Jsq3uAAAAAElFTkSuQmCC';
@@ -404,15 +456,15 @@ const imageBase64 = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAA
     .then(response => response.json())
     .then(data => {
       console.log('تم رفع الصورة:', data);
-       aplus(nnn,mmm);
+       //aplus(nnn,mmm);
     })
     .catch(error => {
       console.error('حدث خطأ أثناء رفع الصورة:', error);
-       aplus(nnn,mmm);
+       //aplus(nnn,mmm);
     });
 
 
-
+*/
 
 
 
