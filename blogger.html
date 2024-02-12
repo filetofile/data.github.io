@@ -18,7 +18,7 @@
 </head>
 <body>
 
-<button class="auth-btn" onclick="authenticateWithBlogger()">Authenticate with Bloggerv53</button>
+<button class="auth-btn" onclick="authenticateWithBlogger()">Authenticate with Bloggerv54</button>
 <input type="file" id="imageInput" accept="image/*">
 <button onclick="checkAndCreateOrUpdatePost()">رفع الصورة</button>
 <label for="file">Select Image:</label>
@@ -106,9 +106,9 @@ xhr.send(JSON.stringify({
           isDraft: true
         }
       }));*/
-  xhr.send(JSON.stringify({
+  xhr.send(
         content: requestData
-      }));
+    );
 }
   
 
