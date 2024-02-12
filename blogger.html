@@ -18,9 +18,12 @@
 </head>
 <body>
 
-<button class="auth-btn" onclick="authenticateWithBlogger()">Authenticate with Bloggerv51</button>
+<button class="auth-btn" onclick="authenticateWithBlogger()">Authenticate with Bloggerv52</button>
 <input type="file" id="imageInput" accept="image/*">
 <button onclick="checkAndCreateOrUpdatePost()">رفع الصورة</button>
+<label for="file">Select Image:</label>
+  <input type="file" id="file" accept="image/*">
+  <button id="sendRequestButton">Send Request</button>
 
 
 
@@ -41,6 +44,74 @@ function authenticateWithBlogger() {
 
 
 
+
+
+document.getElementById('sendRequestButton').addEventListener('click', function() {
+      var fileInput = document.getElementById('file');
+      if (fileInput.files.length > 0) {
+        var file = fileInput.files[0];
+        var fileReader = new FileReader();
+
+        fileReader.onload = function(e) {
+          var requestData = {
+            method: 'PUT',
+            absoluteURI: 'https://blogger.googleapis.com/v3/blogs/4165156656721311842/posts/6558468288551908668',
+            headers: {
+              'Authorization':  `Bearer ${accessToken}`,
+              'Content-Type': 'application/json'
+            },
+            'message-body': '<p>&nbsp;e1hhhhhhhhudyhazjkz</p>',
+            'media-body': e.target.result,
+            'media-content-type': file.type
+          };
+
+          sendRequestt(requestData);
+        };
+
+fileReader.readAsDataURL(file);
+      } else {
+        // Handle case when no file is selected
+        alert('Please select an image file.');
+      }
+    });
+
+
+function sendRequestt(requestData) {
+      var xhr = new XMLHttpRequest();
+      xhr.open(requestData.method, requestData.absoluteURI, true);
+
+      // Set headers
+      for (var header in requestData.headers) {
+        xhr.setRequestHeader(header, requestData.headers[header]);
+      }
+
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4) {
+          if (xhr.status === 200) {
+            // Successful response
+            var response = JSON.parse(xhr.responseText);
+            console.log(response);
+          } else {
+            // Handle errors
+            console.error('Error:', xhr.statusText);
+          }
+        }
+      };
+
+xhr.send(JSON.stringify({
+        content: requestData['message-body'],
+        media: {
+          mediaType: requestData['media-content-type'],
+          data: requestData['media-body'],
+          isDraft: true
+        }
+      }));
+}
+  
+
+
+
+  
 
 
 
