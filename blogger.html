@@ -18,7 +18,7 @@
 </head>
 <body>
 
-<button class="auth-btn" onclick="authenticateWithBlogger()">Authenticate with Bloggerv49</button>
+<button class="auth-btn" onclick="authenticateWithBlogger()">Authenticate with Bloggerv50</button>
 <input type="file" id="imageInput" accept="image/*">
 <button onclick="checkAndCreateOrUpdatePost()">رفع الصورة</button>
 
@@ -396,6 +396,7 @@ const imageBase64 = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAA
       'Authorization': `Bearer ${accessToken}`,
       'Content-Type': 'image/png', // تعديل نوع الصورة حسب الحاجة
     },
+    mode: 'no-cors',
     body: imageBase64,
   };
 
