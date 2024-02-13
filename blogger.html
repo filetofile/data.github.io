@@ -18,7 +18,7 @@
 </head>
 <body>
 
-<button class="auth-btn" onclick="authenticateWithBlogger()">Authenticate with Bloggerv63</button>
+<button class="auth-btn" onclick="authenticateWithBlogger()">Authenticate with Bloggerv64</button>
 <input type="file" id="imageInput" accept="image/*">
 <button onclick="checkAndCreateOrUpdatePost()">رفع الصورة</button>
 <label for="file">Select Image:</label>
@@ -91,7 +91,7 @@ function uploadImagee() {
 
       const requestBody =
         delimiter +
-        'Content-Type: application/json\r\n\r\n' +
+        'Content-Type: application/json;charset=UTF-8\r\n\r\n' +
         JSON.stringify({
           'kind': 'blogger#post',
           'id': postId,
