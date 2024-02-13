@@ -18,7 +18,7 @@
 </head>
 <body>
 
-<button class="auth-btn" onclick="authenticateWithBlogger()">Authenticate with Bloggerv58</button>
+<button class="auth-btn" onclick="authenticateWithBlogger()">Authenticate with Bloggerv59</button>
 <input type="file" id="imageInput" accept="image/*">
 <button onclick="checkAndCreateOrUpdatePost()">رفع الصورة</button>
 <label for="file">Select Image:</label>
@@ -95,7 +95,7 @@ const blogId = '4165156656721311842';
     reader.onload = function(e) {
       const imageData = e.target.result.split(',')[1]; // Extract base64 data
       const contentType = file.type;
-const requestBody = delimiter +
+const requestBody = `\r\n` +
         'Content-Type: application/json\r\n\r\n' +
         JSON.stringify({
           'kind': 'blogger#post',
@@ -107,7 +107,7 @@ const requestBody = delimiter +
             }
           ]
         }) +
-        delimiter +
+        `\r\n` +
         `Content-Type: ${contentType}\r\n` +
         'Content-Transfer-Encoding: base64\r\n' +
         '\r\n' +
