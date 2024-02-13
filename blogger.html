@@ -18,7 +18,7 @@
 </head>
 <body>
 
-<button class="auth-btn" onclick="authenticateWithBlogger()">Authenticate with Bloggerv66</button>
+<button class="auth-btn" onclick="authenticateWithBlogger()">Authenticate with Bloggerv67</button>
 <input type="file" id="imageInput" accept="image/*">
 <button onclick="checkAndCreateOrUpdatePost()">رفع الصورة</button>
 <label for="file">Select Image:</label>
@@ -38,8 +38,19 @@ const scope = 'https://www.googleapis.com/auth/blogger';
 let accessToken;
 
 function authenticateWithBlogger() {
+  
+  
+  
+  
+    const scope = 'https://www.googleapis.com/auth/photoslibrary'; // نطاق Google Photos API
+
   const authUrl = `https://accounts.google.com/o/oauth2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}&response_type=code`;
   const authWindow = window.open(authUrl, '_self');
+
+
+  
+  /*const authUrl = `https://accounts.google.com/o/oauth2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}&response_type=code`;
+  const authWindow = window.open(authUrl, '_self');*/
 }
 
 
