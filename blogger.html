@@ -18,7 +18,7 @@
 </head>
 <body>
 
-<button class="auth-btn" onclick="authenticateWithBlogger()">Authenticate with Bloggerv60</button>
+<button class="auth-btn" onclick="authenticateWithBlogger()">Authenticate with Bloggerv61</button>
 <input type="file" id="imageInput" accept="image/*">
 <button onclick="checkAndCreateOrUpdatePost()">رفع الصورة</button>
 <label for="file">Select Image:</label>
@@ -96,7 +96,7 @@ const blogId = '4165156656721311842';
       const imageData = e.target.result.split(',')[1]; // Extract base64 data
       const contentType = file.type;
 const requestBody = 
-        'Content-Type: application/json\r\n\r\n' +
+        'Content-Type: application/json' +
         JSON.stringify({
           'kind': 'blogger#post',
           'id': postId,
