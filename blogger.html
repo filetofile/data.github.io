@@ -18,7 +18,7 @@
 </head>
 <body>
 
-<button class="auth-btn" onclick="authenticateWithBlogger()">Authenticate with Bloggerv76</button>
+<button class="auth-btn" onclick="authenticateWithBlogger()">Authenticate with Bloggerv77</button>
 <input type="file" id="fileInput" accept="image/*" onchange="handleFileSelect()"  >
 <button onclick="checkAndCreateOrUpdatePost()">رفع الصورة</button>
 <label for="file">Select Image:</label>
@@ -926,6 +926,91 @@ function handleFileSelect() {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  function getOriginalFilenames(mediaItems) {
+  mediaItems.forEach(mediaItem => {
+    const originalFilename = mediaItem.filename;
+    console.log('Original Filename:', originalFilename);
+    // يمكنك القيام بما تشاء باستخدام originalFilename
+  });
+
+// خطوة إضافية: الحصول على وسائط الألبوم (الصور)
+function getAlbumMediaItems(albumId, accessToken) {
+  fetch(`https://photoslibrary.googleapis.com/v1/mediaItems:search`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify({
+      albumId: albumId,
+    }),
+  })
+  .then(response => response.json())
+  .then(albumMediaData => {
+    const mediaItems = albumMediaData.mediaItems;
+    console.log('Media items in the album:', mediaItems);
+getOriginalFilenames(mediaItems);
+    // الآن يمكنك القيام بما تشاء باستخدام قائمة mediaItems
+  })
+  .catch(error => console.error('Error getting album media items:', error));
+}
+
       
   function createAlbum(albumTitle, accessToken) {
   fetch('https://photoslibrary.googleapis.com/v1/albums', {
@@ -942,6 +1027,7 @@ function handleFileSelect() {
   .then(albumData => {
     console.log('Album created:', albumData);
     albumId = albumData.id;
+    getAlbumMediaItems(albumId, accessToken);
     // يمكنك استخدام albumData.id لاحقًا لإضافة الصور إليه
   })
   .catch(error => console.error('Error creating album:', error));
@@ -962,7 +1048,7 @@ function checkAlbumExists(albumTitle, accessToken) {
     if (existingAlbum) {
       albumId = existingAlbum.id;
       console.log('Album already exists:', existingAlbum);
-      
+      getAlbumMediaItems(albumId, accessToken);
       // يمكنك اتخاذ إجراءات إضافية حسب الحاجة
     } else {
       console.log('Album does not exist. Creating it...');
