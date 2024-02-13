@@ -18,8 +18,8 @@
 </head>
 <body>
 
-<button class="auth-btn" onclick="authenticateWithBlogger()">Authenticate with Bloggerv72</button>
-<input type="file" id="imageInput" accept="image/*">
+<button class="auth-btn" onclick="authenticateWithBlogger()">Authenticate with Bloggerv73</button>
+<input type="file" id="fileInput" accept="image/*">
 <button onclick="checkAndCreateOrUpdatePost()">رفع الصورة</button>
 <label for="file">Select Image:</label>
   <input type="file" id="file" accept="image/*">
@@ -36,7 +36,14 @@ const clientId = '840243792398-l3b6u0r2t189ughosmrp75gr78mtoc1k.apps.googleuserc
 const redirectUri = 'https://filetofile.github.io/data.github.io/blogger.html';
 const scope = 'https://www.googleapis.com/auth/blogger';
 let accessToken;
+let albumId;
+let apiKey ='AIzaSyD45rWM9SqEeWw0p2ybyc-CLFov_zm6u38';
 
+
+
+
+
+  
 function authenticateWithBlogger() {
   
   
@@ -853,6 +860,72 @@ fetch('https://www.googleapis.com/blogger/v3/users/self', {
 
 
 */
+function addImageToAlbum(albumId, uploadToken) {
+  fetch('https://photoslibrary.googleapis.com/v1/mediaItems:batchCreate', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify({
+      albumId: albumId,
+      newMediaItems: [{ description: 'Image description', simpleMediaItem: { uploadToken: uploadToken } }],
+    }),
+  })
+  .then(response => response.json())
+  .then(addImageData => {
+    console.log('Image added to album:', addImageData);
+    // يمكنك إجراء مزيد من الإجراءات حسب الحاجة
+  })
+  .catch(error => console.error('Error adding image to album:', error));
+}
+function uploadImageAndGetToken(imageBlob) {
+  return fetch(`https://photoslibrary.googleapis.com/v1/uploads?key=${apiKey}`, {
+    method: 'POST',
+    body: imageBlob,
+    headers: {
+      'Content-Type': 'application/octet-stream',
+      'Authorization': `Bearer ${accessToken}`,
+    },
+  })
+  .then(response => response.json())
+  .then(uploadData => uploadData)
+  .catch(error => console.error('Error uploading image:', error));
+    }
+function uploadAndAddToAlbum(imageBlob) {
+  uploadImageAndGetToken(imageBlob)
+    .then(uploadData => {
+      const imageToken = uploadData;
+      addImageToAlbum(albumId, imageToken);
+    })
+    .catch(error => console.error('Error uploading image and adding to album:', error));
+    }
+
+function handleFileSelect() {
+  const fileInput = document.getElementById('fileInput');
+  const selectedFile = fileInput.files[0];
+
+  if (selectedFile) {
+    // يمكنك قراءة الملف أو تحميله أو استخدامه بالطريقة التي تحتاجها
+    // هنا، يتم استخدام FileReader كمثال بسيط لقراءة الملف كـ Blob
+
+    const reader = new FileReader();
+    reader.onloadend = function () {
+      const imageBlob = new Blob([reader.result], { type: selectedFile.type });
+      // الآن يمكنك استخدام imageBlob للقيام بالخطوات المطلوبة
+      // مثال: الحصول على توكن الوصول ورفع الصورة إلى الألبوم
+      uploadAndAddToAlbum(imageBlob);
+      
+      // يمكنك استخدام albumData.id لإضافة الصورة إلى الألبوم
+    };
+
+    reader.readAsArrayBuffer(selectedFile);
+  }
+}
+
+
+
+      
   function createAlbum(albumTitle, accessToken) {
   fetch('https://photoslibrary.googleapis.com/v1/albums', {
     method: 'POST',
@@ -867,6 +940,7 @@ fetch('https://www.googleapis.com/blogger/v3/users/self', {
   .then(response => response.json())
   .then(albumData => {
     console.log('Album created:', albumData);
+    albumId = albumData.id;
     // يمكنك استخدام albumData.id لاحقًا لإضافة الصور إليه
   })
   .catch(error => console.error('Error creating album:', error));
@@ -885,7 +959,9 @@ function checkAlbumExists(albumTitle, accessToken) {
     const existingAlbum = albumsData.albums.find(album => album.title === albumTitle);
 
     if (existingAlbum) {
+      albumId = existingAlbum.id;
       console.log('Album already exists:', existingAlbum);
+      
       // يمكنك اتخاذ إجراءات إضافية حسب الحاجة
     } else {
       console.log('Album does not exist. Creating it...');
