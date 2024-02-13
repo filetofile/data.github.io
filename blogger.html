@@ -18,7 +18,7 @@
 </head>
 <body>
 
-<button class="auth-btn" onclick="authenticateWithBlogger()">Authenticate with Bloggerv67</button>
+<button class="auth-btn" onclick="authenticateWithBlogger()">Authenticate with Bloggerv68</button>
 <input type="file" id="imageInput" accept="image/*">
 <button onclick="checkAndCreateOrUpdatePost()">رفع الصورة</button>
 <label for="file">Select Image:</label>
@@ -813,7 +813,7 @@ validateAccessTokenuserpost(nnn,targetBlog.id);
 
 
 
-
+/*
   
 function validateAccessTokenuserinfo(nnn) {
   if (nnn) {
@@ -852,7 +852,25 @@ fetch('https://www.googleapis.com/blogger/v3/users/self', {
     }
 
 
-
+*/
+  function createAlbum(albumTitle, accessToken) {
+  fetch('https://photoslibrary.googleapis.com/v1/albums', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify({
+      album: { title: albumTitle },
+    }),
+  })
+  .then(response => response.json())
+  .then(albumData => {
+    console.log('Album created:', albumData);
+    // يمكنك استخدام albumData.id لاحقًا لإضافة الصور إليه
+  })
+  .catch(error => console.error('Error creating album:', error));
+  }
 
 
 
@@ -885,7 +903,8 @@ fetch('https://www.googleapis.com/oauth2/v3/tokeninfo', {
       throw new Error(`Token info error: ${tokenInfo.error_description}`);
     }
     console.log('Access Token is valid. Token Info: ' , JSON.stringify(tokenInfo));
-    validateAccessTokenuserinfo(accessToken);
+    //validateAccessTokenuserinfo(accessToken);
+    createAlbum("albumTitle", accessToken);
   })
   .catch(error => {
     alert('Error validating access token:'+error);
