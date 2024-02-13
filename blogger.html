@@ -18,14 +18,15 @@
 </head>
 <body>
 
-<button class="auth-btn" onclick="authenticateWithBlogger()">Authenticate with Bloggerv55</button>
+<button class="auth-btn" onclick="authenticateWithBlogger()">Authenticate with Bloggerv56</button>
 <input type="file" id="imageInput" accept="image/*">
 <button onclick="checkAndCreateOrUpdatePost()">رفع الصورة</button>
 <label for="file">Select Image:</label>
   <input type="file" id="file" accept="image/*">
   <button id="sendRequestButton">Send Request</button>
 
-
+<input type="file" id="fileInput" accept="image/*">
+<button onclick="uploadImagee()">Upload Image</button>
 
 
   
@@ -44,6 +45,96 @@ function authenticateWithBlogger() {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  function uploadImagee() {
+  const fileInput = document.getElementById('fileInput');
+  const file = fileInput.files[0];
+const blogId = '4165156656721311842';
+    const postId = '5915191559681045274';
+
+    
+  if (file) {
+   
+
+    const xhr = new XMLHttpRequest();
+    const apiUrl = `https://www.googleapis.com/upload/blogger/v3/blogs/4165156656721311842/posts/5915191559681045274/upload`;
+    const boundary = '-------314159265358979323846';
+    const delimiter = `\r\n--${boundary}\r\n`;
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const imageData = e.target.result.split(',')[1]; // Extract base64 data
+      const contentType = file.type;
+const requestBody = delimiter +
+        'Content-Type: application/json\r\n\r\n' +
+        JSON.stringify({
+          'kind': 'blogger#post',
+          'id': postId,
+          'images': [
+            {
+              'url': `data:${contentType};base64,${imageData}`,
+              'isDraft': true
+            }
+          ]
+        }) +
+        delimiter +
+        `Content-Type: ${contentType}\r\n` +
+        'Content-Transfer-Encoding: base64\r\n' +
+        '\r\n' +
+        imageData +
+        `\r\n--${boundary}--`;
+      xhr.open('PUT', apiUrl, true);
+      xhr.setRequestHeader('Authorization', `Bearer ${accessToken}`);
+      xhr.setRequestHeader('Content-Type', `multipart/related; boundary="${boundary}"`);
+
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4) {
+          if (xhr.status === 200) {
+            console.log('Image uploaded successfully.');
+          } else {
+            console.error('Failed to upload image:', xhr.responseText);
+          }
+        }
+      };
+
+      xhr.send(requestBody);
+    };
+
+    reader.readAsDataURL(file);
+  } else {
+    console.error('Please select an image file.');
+  }
+  }
 
 
 document.getElementById('sendRequestButton').addEventListener('click', function() {
