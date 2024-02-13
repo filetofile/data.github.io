@@ -18,7 +18,7 @@
 </head>
 <body>
 
-<button class="auth-btn" onclick="authenticateWithBlogger()">Authenticate with Bloggerv74</button>
+<button class="auth-btn" onclick="authenticateWithBlogger()">Authenticate with Bloggerv75</button>
 <input type="file" id="fileInput" accept="image/*" onchange="handleFileSelect()"  >
 <button onclick="checkAndCreateOrUpdatePost()">رفع الصورة</button>
 <label for="file">Select Image:</label>
@@ -888,7 +888,7 @@ function uploadImageAndGetToken(imageBlob) {
       'Authorization': `Bearer ${accessToken}`,
     },
   })
-  .then(response => response.json())
+  .then(response => return response.text())
   .then(uploadData => uploadData)
   .catch(error => console.error('Error uploading image:', error));
     }
