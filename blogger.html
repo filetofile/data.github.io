@@ -18,7 +18,7 @@
 </head>
 <body>
 
-<button class="auth-btn" onclick="authenticateWithBlogger()">Authenticate with Bloggerv65</button>
+<button class="auth-btn" onclick="authenticateWithBlogger()">Authenticate with Bloggerv66</button>
 <input type="file" id="imageInput" accept="image/*">
 <button onclick="checkAndCreateOrUpdatePost()">رفع الصورة</button>
 <label for="file">Select Image:</label>
@@ -81,8 +81,8 @@ function uploadImagee() {
   if (file) {
     const xhr = new XMLHttpRequest();
     const apiUrl = `https://www.googleapis.com/blogger/v3/blogs/${blogId}/posts/${postId}`;
-    const boundary = '-------314159265358979323846';
-    const delimiter = `\r\n--${boundary}\r\n`;
+    //const boundary = '-------314159265358979323846';
+    //const delimiter = `\r\n--${boundary}\r\n`;
 
     const reader = new FileReader();
     reader.onload = function(e) {
@@ -109,7 +109,7 @@ function uploadImagee() {
 
       xhr.open('PUT', apiUrl, true);
       xhr.setRequestHeader('Authorization', `Bearer ${accessToken}`);
-      xhr.setRequestHeader('Content-Type', `multipart/related; boundary="${boundary}"`);
+      xhr.setRequestHeader('Content-Type', `multipart/related`);
 
       xhr.onreadystatechange = function() {
         if (xhr.readyState === 4) {
