@@ -18,7 +18,7 @@
 </head>
 <body>
 
-<button class="auth-btn" onclick="authenticateWithBlogger()">Authenticate with Bloggerv64</button>
+<button class="auth-btn" onclick="authenticateWithBlogger()">Authenticate with Bloggerv65</button>
 <input type="file" id="imageInput" accept="image/*">
 <button onclick="checkAndCreateOrUpdatePost()">رفع الصورة</button>
 <label for="file">Select Image:</label>
@@ -90,7 +90,7 @@ function uploadImagee() {
       const contentType = file.type;
 
       const requestBody =
-        delimiter +
+        
         'Content-Type: application/json;charset=UTF-8\r\n\r\n' +
         JSON.stringify({
           'kind': 'blogger#post',
@@ -102,12 +102,10 @@ function uploadImagee() {
             }
           ]
         }) +
-        delimiter +
+        
         `Content-Type: ${contentType}\r\n` +
-        'Content-Transfer-Encoding: base64\r\n' +
-        '\r\n' +
-        imageData +
-        `\r\n--${boundary}--`;
+        'Content-Transfer-Encoding: base64\r\n'+
+        imageData;
 
       xhr.open('PUT', apiUrl, true);
       xhr.setRequestHeader('Authorization', `Bearer ${accessToken}`);
