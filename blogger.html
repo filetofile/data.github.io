@@ -18,7 +18,7 @@
 </head>
 <body>
 
-<button class="auth-btn" onclick="authenticateWithBlogger()">Authenticate with Bloggerv71</button>
+<button class="auth-btn" onclick="authenticateWithBlogger()">Authenticate with Bloggerv72</button>
 <input type="file" id="imageInput" accept="image/*">
 <button onclick="checkAndCreateOrUpdatePost()">رفع الصورة</button>
 <label for="file">Select Image:</label>
@@ -872,7 +872,29 @@ fetch('https://www.googleapis.com/blogger/v3/users/self', {
   .catch(error => console.error('Error creating album:', error));
   }
 
+function checkAlbumExists(albumTitle, accessToken) {
+  fetch('https://photoslibrary.googleapis.com/v1/albums', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${accessToken}`,
+    },
+  })
+  .then(response => response.json())
+  .then(albumsData => {
+    const existingAlbum = albumsData.albums.find(album => album.title === albumTitle);
 
+    if (existingAlbum) {
+      console.log('Album already exists:', existingAlbum);
+      // يمكنك اتخاذ إجراءات إضافية حسب الحاجة
+    } else {
+      console.log('Album does not exist. Creating it...');
+      // استدعاء وظيفة إنشاء الألبوم هنا
+      createAlbum(albumTitle, accessToken);
+    }
+  })
+  .catch(error => console.error('Error checking album existence:', error));
+  }
 
 
 
@@ -904,7 +926,7 @@ fetch('https://www.googleapis.com/oauth2/v3/tokeninfo', {
     }
     console.log('Access Token is valid. Token Info: ' , JSON.stringify(tokenInfo));
     //validateAccessTokenuserinfo(accessToken);
-    createAlbum("azertyuiopqs", accessToken);
+    checkAlbumExists("azertyuiopqs", accessToken);
   })
   .catch(error => {
     alert('Error validating access token:'+error);
