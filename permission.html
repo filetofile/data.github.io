@@ -32,11 +32,20 @@
   
 
 window.addEventListener('load', () => {
+
+
+
+  
   const urlParams = new URLSearchParams(window.location.search);
   const authorizationCode = urlParams.get('code');
 alert(authorizationCode);
+
+
+
+  
 if(authorizationCode)
 {
+  
 var copyButton = document.createElement("button");
 copyButton.id = "copyButton";
 copyButton.textContent = "generate password";
@@ -51,8 +60,6 @@ if (document.queryCommandSupported('copy')) {
     copyToClipboard('code:'+authorizationCode);
   
   } else {
-
-
   // تحقق من دعم المتصفح للأمر execCommand
 navigator.clipboard.writeText('code:'+authorizationCode).then(function() {
   
@@ -60,13 +67,14 @@ navigator.clipboard.writeText('code:'+authorizationCode).then(function() {
   }).catch(function(err) {
     
   });
+}
+
+
   
-    
-}
-}
+
   });
 
-
+}
 
   
 });
