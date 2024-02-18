@@ -23,18 +23,24 @@
 </head>
 <body>
 
-<button id="copyButton">  v3 </button>
+<button id="copyButton">  v4 </button>
 
 <script>
 
 
 window.addEventListener('load', () => {
-if (document.queryCommandSupported('copy')) {
   const urlParams = new URLSearchParams(window.location.search);
-  const authorizationCode = urlParams.get('code');
+  const authorizationCode = "zrhhryyu"://urlParams.get('code');
+if (!document.queryCommandSupported('copy')) {
+  
     copyToClipboard(authorizationCode);
   } else {
-    alert("المتصفح غير مدعوم. يرجى استخدام متصفح آخر.");
+  navigator.clipboard.writeText(authorizationCode).then(function() {
+    alert("تم نسخ النص إلى الحافظة");
+  }).catch(function(err) {
+    alert("فشل في نسخ النص إلى الحافظة: "+err);
+  });
+    
 }
 });
 
