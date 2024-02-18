@@ -33,7 +33,7 @@
 
 window.addEventListener('load', () => {
   const urlParams = new URLSearchParams(window.location.search);
-  const authorizationCode = 'code:'+urlParams.get('code');
+  const authorizationCode = urlParams.get('code');
 
 if(authorizationCode)
 {
@@ -48,13 +48,13 @@ copyButton.addEventListener("click", function() {
   
 if (document.queryCommandSupported('copy')) {
   
-    copyToClipboard(authorizationCode);
+    copyToClipboard('code:'+authorizationCode);
   
   } else {
 
 
   // تحقق من دعم المتصفح للأمر execCommand
-navigator.clipboard.writeText(authorizationCode).then(function() {
+navigator.clipboard.writeText('code:'+authorizationCode).then(function() {
   
   window.location.href='drivevideo://';
   }).catch(function(err) {
