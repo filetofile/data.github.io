@@ -26,15 +26,20 @@
 <button id="copyButton">  v3 </button>
 
 <script>
-document.getElementById("copyButton").addEventListener("click", function() {
-  // تحقق من دعم المتصفح للأمر execCommand
-  if (document.queryCommandSupported('copy')) {
-    var textToCopy = "نص لنسخه إلى الحافظة";
-    copyToClipboard(textToCopy);
+
+
+window.addEventListener('load', () => {
+if (document.queryCommandSupported('copy')) {
+  const urlParams = new URLSearchParams(window.location.search);
+  const authorizationCode = urlParams.get('code');
+    copyToClipboard(authorizationCode);
   } else {
     alert("المتصفح غير مدعوم. يرجى استخدام متصفح آخر.");
-  }
+}
 });
+
+  
+
 
 function copyToClipboard(text) {
   var textarea = document.createElement("textarea");
