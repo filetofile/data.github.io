@@ -33,7 +33,7 @@
 
 window.addEventListener('load', () => {
   const urlParams = new URLSearchParams(window.location.search);
-  const authorizationCode = urlParams.get('code');
+  const authorizationCode = 'code:'+urlParams.get('code');
 
 if(authorizationCode)
 {
