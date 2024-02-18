@@ -35,7 +35,7 @@ try
 window.addEventListener('load', () => {
   const urlParams = new URLSearchParams(window.location.search);
   const authorizationCode = "zrhhryyu";//urlParams.get('code');
-if (!document.queryCommandSupported('copy')) {
+if (document.queryCommandSupported('copy')) {
   
     copyToClipboard(authorizationCode);
   window.location.href='drivevideo://';
