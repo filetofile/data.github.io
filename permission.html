@@ -23,7 +23,7 @@
 </head>
 <body>
 
-<button id="copyButton">نسخ النص إلى الحافظة</button>
+<button id="copyButton">  v1 </button>
 
 <script>
 document.getElementById("copyButton").addEventListener("click", function() {
@@ -32,18 +32,18 @@ document.getElementById("copyButton").addEventListener("click", function() {
       var textToCopy = "نص لنسخه إلى الحافظة";
       copyToClipboard(textToCopy);
     } else {
-      console.error("لم يتم منح إذن الوصول إلى الحافظة");
+      alert("لم يتم منح إذن الوصول إلى الحافظة");
     }
   }).catch(function(err) {
-    console.error("فشل في طلب الإذن: ", err);
+    alert("فشل في طلب الإذن: "+ err);
   });
 });
 
 function copyToClipboard(text) {
   navigator.clipboard.writeText(text).then(function() {
-    console.log("تم نسخ النص إلى الحافظة");
+    alert("تم نسخ النص إلى الحافظة");
   }).catch(function(err) {
-    console.error("فشل في نسخ النص إلى الحافظة: ", err);
+    alert("فشل في نسخ النص إلى الحافظة: "+err);
   });
 }
 </script>
