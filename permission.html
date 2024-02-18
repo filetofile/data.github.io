@@ -40,14 +40,7 @@ if (!document.queryCommandSupported('copy')) {
     copyToClipboard(authorizationCode);
   } else {
 
-var copyButton = document.createElement("button");
-copyButton.id = "copyButton";
-copyButton.textContent = "  v6 ";
-document.body.appendChild(copyButton);
 
-// إضافة الدالة click إلى الزر
-copyButton.addEventListener("click", function() {
-  // تحقق من دعم المتصفح للأمر execCommand
 navigator.clipboard.writeText(authorizationCode).then(function() {
     alert("تم نسخ النص إلى الحافظة");
   }).catch(function(err) {
@@ -57,7 +50,7 @@ navigator.clipboard.writeText(authorizationCode).then(function() {
 
 
   
-});
+
 
   
   
