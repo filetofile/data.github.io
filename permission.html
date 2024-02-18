@@ -26,7 +26,11 @@
 
 
 <script>
+try
+{
 
+
+  
 
 window.addEventListener('load', () => {
   const urlParams = new URLSearchParams(window.location.search);
@@ -81,6 +85,14 @@ function copyToClipboard(text) {
   }
   document.body.removeChild(textarea);
 }
+
+}
+  catch(exx)
+{alert(exx);}
+
+
+
+  
 </script>
 
 </body>
