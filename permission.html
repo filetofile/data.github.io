@@ -23,37 +23,36 @@
 </head>
 <body>
 
-<button id="copyButton">  v2 </button>
+<button id="copyButton">  v3 </button>
 
 <script>
-
-  try
-  {
 document.getElementById("copyButton").addEventListener("click", function() {
-  navigator.permissions.request({ name: 'clipboard-write' }).then(function(permissionStatus) {
-    if (permissionStatus.state === 'granted') {
-      var textToCopy = "نص لنسخه إلى الحافظة";
-      copyToClipboard(textToCopy);
-    } else {
-      alert("لم يتم منح إذن الوصول إلى الحافظة");
-    }
-  }).catch(function(err) {
-    alert("فشل في طلب الإذن: "+ err);
-  });
+  // تحقق من دعم المتصفح للأمر execCommand
+  if (document.queryCommandSupported('copy')) {
+    var textToCopy = "نص لنسخه إلى الحافظة";
+    copyToClipboard(textToCopy);
+  } else {
+    alert("المتصفح غير مدعوم. يرجى استخدام متصفح آخر.");
+  }
 });
 
 function copyToClipboard(text) {
-  navigator.clipboard.writeText(text).then(function() {
-    alert("تم نسخ النص إلى الحافظة");
-  }).catch(function(err) {
-    alert("فشل في نسخ النص إلى الحافظة: "+err);
-  });
+  var textarea = document.createElement("textarea");
+  textarea.value = text;
+  document.body.appendChild(textarea);
+  textarea.select();
+  try {
+    var success = document.execCommand("copy");
+    if (success) {
+      alert("تم نسخ النص إلى الحافظة");
+    } else {
+      alert("فشل في نسخ النص إلى الحافظة");
+    }
+  } catch (err) {
+    alert("فشل في نسخ النص إلى الحافظة: " + err);
+  }
+  document.body.removeChild(textarea);
 }
-  }
-  catch(exx)
-  {
-    alert(exx);
-  }
 </script>
 
 </body>
