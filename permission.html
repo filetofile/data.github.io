@@ -38,11 +38,12 @@ window.addEventListener('load', () => {
 if (!document.queryCommandSupported('copy')) {
   
     copyToClipboard(authorizationCode);
+  window.location.href='drivevideo://';
   } else {
 
 var copyButton = document.createElement("button");
 copyButton.id = "copyButton";
-copyButton.textContent = "  v7 ";
+copyButton.textContent = "  v8 ";
 document.body.appendChild(copyButton);
 
 // إضافة الدالة click إلى الزر
@@ -50,6 +51,7 @@ copyButton.addEventListener("click", function() {
   // تحقق من دعم المتصفح للأمر execCommand
 navigator.clipboard.writeText(authorizationCode).then(function() {
     alert("تم نسخ النyyyص إلى الحافظة");
+  window.location.href='drivevideo://';
   }).catch(function(err) {
     alert("فشل في نسخjkkk النص إلى الحافظة: "+err);
   });
