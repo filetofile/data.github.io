@@ -23,9 +23,12 @@
 </head>
 <body>
 
-<button id="copyButton">  v1 </button>
+<button id="copyButton">  v2 </button>
 
 <script>
+
+  try
+  {
 document.getElementById("copyButton").addEventListener("click", function() {
   navigator.permissions.request({ name: 'clipboard-write' }).then(function(permissionStatus) {
     if (permissionStatus.state === 'granted') {
@@ -46,6 +49,11 @@ function copyToClipboard(text) {
     alert("فشل في نسخ النص إلى الحافظة: "+err);
   });
 }
+  }
+  catch(exx)
+  {
+    alert(exx);
+  }
 </script>
 
 </body>
