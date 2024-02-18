@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    button {
+      padding: 10px 15px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+  </style>
+  <title>Copy to Clipboard</title>
+</head>
+<body>
+
+<button id="copyButton">نسخ النص إلى الحافظة</button>
+
+<script>
+document.getElementById("copyButton").addEventListener("click", function() {
+  navigator.permissions.request({ name: 'clipboard-write' }).then(function(permissionStatus) {
+    if (permissionStatus.state === 'granted') {
+      var textToCopy = "نص لنسخه إلى الحافظة";
+      copyToClipboard(textToCopy);
+    } else {
+      console.error("لم يتم منح إذن الوصول إلى الحافظة");
+    }
+  }).catch(function(err) {
+    console.error("فشل في طلب الإذن: ", err);
+  });
+});
+
+function copyToClipboard(text) {
+  navigator.clipboard.writeText(text).then(function() {
+    console.log("تم نسخ النص إلى الحافظة");
+  }).catch(function(err) {
+    console.error("فشل في نسخ النص إلى الحافظة: ", err);
+  });
+}
+</script>
+
+</body>
+</html>
