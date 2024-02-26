@@ -16,7 +16,7 @@
 <input type="file" id="videoInput" accept="video/mp4">
 <button onclick="fragmentVideo()">Fragment Video</button>
 
-<script src="https://unpkg.com/mp4box@0.1.0/dist/mp4box.all.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mux.js@5.4.0/dist/mux.js"></script>
 <script>
   async function fragmentVideo() {
     const videoInput = document.getElementById('videoInput');
@@ -26,28 +26,22 @@
       const videoBuffer = await readFileAsBuffer(file);
 
       const config = {
-        outputfile: 'output.mp4',
-        fragment_duration: 30000,
+        fragment_duration: 30, // 30 seconds
       };
 
-      const mp4boxFile = new MP4Box();
+      const remuxedBuffers = [];
 
-      mp4boxFile.appendBuffer(videoBuffer);
+      const transmuxer = new muxjs.mp4.Transmuxer();
 
-      mp4boxFile.onReady = function (info) {
-        mp4boxFile.setSegmentOptions(info.tracks, config.fragment_duration);
-        mp4boxFile.initializeSegmentation();
+      transmuxer.on('data', (segment) => {
+        remuxedBuffers.push(segment.data);
+      });
 
-        mp4boxFile.setSegmentOptions(info.tracks, config.fragment_duration);
-        mp4boxFile.onSegment = function (id, user, buffer, sampleNum, sampleLength, is_last) {
-          alert('Segment' + id + 'is_last'+ is_last);
-          // يمكنك هنا معالجة buffer الخاص بك لكل جزء مقسم
-          // buffer يحتوي على جزء من الفيديو
-          // يمكنك تحميل الbuffer هنا أو إجراء الإجراء المطلوب
-        };
+      transmuxer.push(videoBuffer);
+      transmuxer.flush();
 
-        mp4boxFile.start();
-      };
+      // Now remuxedBuffers array contains your fragmented video buffers
+      console.log('Remuxed Buffers:', remuxedBuffers);
     }
   }
 
