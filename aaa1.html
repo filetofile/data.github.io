@@ -3,38 +3,51 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>اختيار فيديو وتحميله متقطعًا</title>
+  <title>MP4 Fragmentation</title>
 </head>
 <body>
-  <input type="file" id="fileInput" accept="video/mp4" />
+  <input type="file" id="videoInput" accept="video/mp4">
+  <button onclick="fragmentVideo()">Fragment Video</button>
+
+  <script src="https://unpkg.com/mp4box@0.1.0/dist/mp4box.all.js"></script>
   <script>
-    document.getElementById('fileInput').addEventListener('change', handleFile, false);
+    async function fragmentVideo() {
+      const videoInput = document.getElementById('videoInput');
+      const file = videoInput.files[0];
 
-    const chunkSize = 1024 * 1024; // 1 MB حجم الدفعة
-
-    async function handleFile() {
-      const fileInput = document.getElementById('fileInput');
-      const file = fileInput.files[0];
-
-      if (file) {
-        const reader = file.stream().getReader();
-
-        while (true) {
-          const { done, value } = await reader.read();
-
-          if (done) {
-            break;
-          }
-
-          // يمكنك هنا معالجة الدفعة الحالية من البيانات
-          processBufferFragment(value);
-        }
+      if (!file) {
+        console.error('Please select a video file.');
+        return;
       }
+
+      const fileData = await readFileAsync(file);
+      const mp4boxFile = new MP4Box();
+      mp4boxFile.appendBuffer(fileData);
+
+      mp4boxFile.onReady = function (info) {
+        const fragments = mp4boxFile.getFragmentSync();
+        
+        fragments.forEach((fragment, index) => {
+          const blob = new Blob([fragment.buffer], { type: 'video/mp4' });
+          saveAs(blob, `fragment_${index + 1}.mp4`);
+        });
+      };
     }
 
-    function processBufferFragment(buffer) {
-      // يمكنك هنا معالجة الدفعة الحالية من البيانات
-      console.log('معالجة الدفعة:', buffer);
+    function readFileAsync(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+
+        reader.onload = function (event) {
+          resolve(event.target.result);
+        };
+
+        reader.onerror = function (event) {
+          reject(new Error('Error reading file'));
+        };
+
+        reader.readAsArrayBuffer(file);
+      });
     }
   </script>
 </body>
