@@ -40,7 +40,7 @@
 
         mp4boxFile.setSegmentOptions(info.tracks, config.fragment_duration);
         mp4boxFile.onSegment = function (id, user, buffer, sampleNum, sampleLength, is_last) {
-          console.log('Segment', id, 'is_last', is_last);
+          alert('Segment' + id + 'is_last'+ is_last);
           // يمكنك هنا معالجة buffer الخاص بك لكل جزء مقسم
           // buffer يحتوي على جزء من الفيديو
           // يمكنك تحميل الbuffer هنا أو إجراء الإجراء المطلوب
