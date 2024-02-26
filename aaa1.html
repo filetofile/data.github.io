@@ -17,15 +17,12 @@
 <button onclick="fragmentVideo()">Fragment Video</button>
 
 <script type="module">
-  import init, { createFFmpeg, fetchFile } from 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/umd/ffmpeg-core.js';
+  import { createFFmpeg, fetchFile } from 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/ffmpeg-core.esm.js';
 
   const ffmpeg = createFFmpeg({ log: true });
 
   async function loadFFmpeg() {
-    await init({
-      corePath: 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/umd/ffmpeg-core.js',
-      wasmPath: 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/umd/ffmpeg-core.wasm',
-    });
+    await ffmpeg.load();
   }
 
   async function fragmentVideo() {
@@ -37,7 +34,6 @@
     if (file) {
       const videoBuffer = await readFileAsArrayBuffer(file);
 
-      await ffmpeg.load();
       ffmpeg.FS('writeFile', 'input.mp4', new Uint8Array(videoBuffer));
 
       await ffmpeg.run('-i', 'input.mp4', '-c', 'copy', '-map', '0', '-segment_time', '30', '-reset_timestamps', '1', '-f', 'segment', 'output%03d.mp4');
