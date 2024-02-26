@@ -12,20 +12,19 @@
   </style>
 </head>
 <body>
-az
+
 <input type="file" id="videoInput" accept="video/mp4">
 <button onclick="fragmentVideo()">Fragment Video</button>
 
 <script type="module">
-  import init, { createFFmpeg, fetchFile } from '@ffmpeg/ffmpeg';
+  import init, { createFFmpeg, fetchFile } from '/ffmpeg-core.js';
 
   const ffmpeg = createFFmpeg({ log: true });
 
   async function loadFFmpeg() {
     await init({
-      corePath: 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/umd/ffmpeg-core.js',
-      // wasmPath: 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/umd/ffmpeg-core.wasm',
-      // Uncomment the line above if you also want to specify wasmPath
+      corePath: '/ffmpeg-core.js',
+      // wasmPath: '/ffmpeg-core.wasm', // Uncomment the line if you want to specify wasmPath
     });
   }
 
