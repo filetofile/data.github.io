@@ -12,40 +12,55 @@
   </style>
 </head>
 <body>
-v1
+az
 <input type="file" id="videoInput" accept="video/mp4">
 <button onclick="fragmentVideo()">Fragment Video</button>
 
-<script src="https://cdn.jsdelivr.net/npm/mux.js@5.4.0/dist/mux.js"></script>
-<script>
+<script type="module">
+  import init, { createFFmpeg, fetchFile } from '@ffmpeg/ffmpeg';
+
+  const ffmpeg = createFFmpeg({ log: true });
+
+  async function loadFFmpeg() {
+    await init({
+      corePath: 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/umd/ffmpeg-core.js',
+      // wasmPath: 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/umd/ffmpeg-core.wasm',
+      // Uncomment the line above if you also want to specify wasmPath
+    });
+  }
+
   async function fragmentVideo() {
+    await loadFFmpeg();
+
     const videoInput = document.getElementById('videoInput');
     const file = videoInput.files[0];
 
     if (file) {
-      const videoBuffer = await readFileAsBuffer(file);
+      const videoBuffer = await readFileAsArrayBuffer(file);
 
-      const config = {
-        fragment_duration: 30, // 30 seconds
-      };
+      await ffmpeg.load();
+      ffmpeg.FS('writeFile', 'input.mp4', new Uint8Array(videoBuffer));
 
-      const remuxedBuffers = [];
+      await ffmpeg.run('-i', 'input.mp4', '-c', 'copy', '-map', '0', '-segment_time', '30', '-reset_timestamps', '1', '-f', 'segment', 'output%03d.mp4');
 
-      const transmuxer = new muxjs.mp4.Transmuxer();
+      const segmentedBuffers = [];
+      for (let i = 1; i <= ffmpeg.FS('readdir', '/').length; i++) {
+        const segmentBuffer = ffmpeg.FS('readFile', `output${i}.mp4`);
+        segmentedBuffers.push(segmentBuffer);
+      }
 
-      transmuxer.on('data', (segment) => {
-        remuxedBuffers.push(segment.data);
-      });
+      // Now segmentedBuffers array contains your segmented video buffers
+      console.log('Segmented Buffers:', segmentedBuffers);
 
-      transmuxer.push(videoBuffer);
-      transmuxer.flush();
-
-      // Now remuxedBuffers array contains your fragmented video buffers
-      console.log('Remuxed Buffers:', remuxedBuffers);
+      // Clean up
+      ffmpeg.FS('unlink', 'input.mp4');
+      for (let i = 1; i <= ffmpeg.FS('readdir', '/').length; i++) {
+        ffmpeg.FS('unlink', `output${i}.mp4`);
+      }
     }
   }
 
-  function readFileAsBuffer(file) {
+  function readFileAsArrayBuffer(file) {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
 
