@@ -17,14 +17,14 @@
 <button onclick="fragmentVideo()">Fragment Video</button>
 
 <script type="module">
-  import init, { createFFmpeg, fetchFile } from '/ffmpeg-core.js';
+  import init, { createFFmpeg, fetchFile } from 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/umd/ffmpeg-core.js';
 
   const ffmpeg = createFFmpeg({ log: true });
 
   async function loadFFmpeg() {
     await init({
-      corePath: '/ffmpeg-core.js',
-      // wasmPath: '/ffmpeg-core.wasm', // Uncomment the line if you want to specify wasmPath
+      corePath: 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/umd/ffmpeg-core.js',
+      wasmPath: 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/umd/ffmpeg-core.wasm',
     });
   }
 
