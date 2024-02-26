@@ -23,7 +23,7 @@
 <body>
   <input type="file" id="videoInput" accept="video/*">
   <video id="videoPlayer" controls></video>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/mp4box/2.0.0/mp4box.all.min.js"></script>
+  <script src="https://unpkg.com/mp4box@0.1.0/dist/mp4box.simple.min.js"></script>
   <script>
     document.getElementById('videoInput').addEventListener('change', function (event) {
       const videoInput = event.target;
