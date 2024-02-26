@@ -3,73 +3,39 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Video Fragmentation</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
-    }
-  </style>
+  <title>اختيار فيديو وتحميله متقطعًا</title>
 </head>
 <body>
+  <input type="file" id="fileInput" accept="video/mp4" />
+  <script>
+    document.getElementById('fileInput').addEventListener('change', handleFile, false);
 
-<input type="file" id="videoInput" accept="video/mp4">
-<button onclick="fragmentVideo()">Fragment Video</button>
+    const chunkSize = 1024 * 1024; // 1 MB حجم الدفعة
 
-<script type="module">
-  import { createFFmpeg, fetchFile } from 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/ffmpeg-core.esm.js';
+    async function handleFile() {
+      const fileInput = document.getElementById('fileInput');
+      const file = fileInput.files[0];
 
-  const ffmpeg = createFFmpeg({ log: true });
+      if (file) {
+        const reader = file.stream().getReader();
 
-  async function loadFFmpeg() {
-    await ffmpeg.load();
-  }
+        while (true) {
+          const { done, value } = await reader.read();
 
-  async function fragmentVideo() {
-    await loadFFmpeg();
+          if (done) {
+            break;
+          }
 
-    const videoInput = document.getElementById('videoInput');
-    const file = videoInput.files[0];
-
-    if (file) {
-      const videoBuffer = await readFileAsArrayBuffer(file);
-
-      ffmpeg.FS('writeFile', 'input.mp4', new Uint8Array(videoBuffer));
-
-      await ffmpeg.run('-i', 'input.mp4', '-c', 'copy', '-map', '0', '-segment_time', '30', '-reset_timestamps', '1', '-f', 'segment', 'output%03d.mp4');
-
-      const segmentedBuffers = [];
-      for (let i = 1; i <= ffmpeg.FS('readdir', '/').length; i++) {
-        const segmentBuffer = ffmpeg.FS('readFile', `output${i}.mp4`);
-        segmentedBuffers.push(segmentBuffer);
-      }
-
-      // Now segmentedBuffers array contains your segmented video buffers
-      console.log('Segmented Buffers:', segmentedBuffers);
-
-      // Clean up
-      ffmpeg.FS('unlink', 'input.mp4');
-      for (let i = 1; i <= ffmpeg.FS('readdir', '/').length; i++) {
-        ffmpeg.FS('unlink', `output${i}.mp4`);
+          // يمكنك هنا معالجة الدفعة الحالية من البيانات
+          processBufferFragment(value);
+        }
       }
     }
-  }
 
-  function readFileAsArrayBuffer(file) {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-
-      reader.onload = function (event) {
-        resolve(event.target.result);
-      };
-
-      reader.onerror = function (event) {
-        reject(new Error('Failed to read the file.'));
-      };
-
-      reader.readAsArrayBuffer(file);
-    });
-  }
-</script>
+    function processBufferFragment(buffer) {
+      // يمكنك هنا معالجة الدفعة الحالية من البيانات
+      console.log('معالجة الدفعة:', buffer);
+    }
+  </script>
 </body>
 </html>
