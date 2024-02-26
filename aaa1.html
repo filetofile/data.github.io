@@ -3,57 +3,69 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Video Fragmentation</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin: 50px;
-    }
-
-    video {
-      width: 80%;
-      max-width: 800px;
-      margin-top: 20px;
+      margin: 20px;
     }
   </style>
-  <title>v1</title>
 </head>
 <body>
-  <input type="file" id="videoInput" accept="video/*">
-  <video id="videoPlayer" controls></video>
-  <script src="https://unpkg.com/mp4box@0.1.0/dist/mp4box.simple.min.js"></script>
-  <script>
-    document.getElementById('videoInput').addEventListener('change', function (event) {
-      const videoInput = event.target;
-      const selectedFile = videoInput.files[0];
 
-      if (selectedFile) {
-        const reader = new FileReader();
-        reader.onload = function (e) {
-          const nonFragmentedVideoData = new Uint8Array(e.target.result);
+<input type="file" id="videoInput" accept="video/mp4">
+<button onclick="fragmentVideo()">Fragment Video</button>
 
-          // تحويل الفيديو إلى fragmented MP4 باستخدام mp4box.js
-          const mp4boxFile = MP4Box.createFile();
-          mp4boxFile.appendBuffer(nonFragmentedVideoData);
-          mp4boxFile.flush();
+<script src="https://unpkg.com/mp4box@0.1.0/dist/mp4box.all.min.js"></script>
+<script>
+  async function fragmentVideo() {
+    const videoInput = document.getElementById('videoInput');
+    const file = videoInput.files[0];
 
-          // الحصول على البيانات المستعارة (fragmented) كـ Uint8Array
-          const fragmentedData = new Uint8Array(mp4boxFile.moofboxes[0].buffer);
+    if (file) {
+      const videoBuffer = await readFileAsBuffer(file);
 
-          // تحويل الـ fragmented MP4 إلى Blob
-          const blob = new Blob([fragmentedData], { type: 'video/mp4' });
-          const blobURL = URL.createObjectURL(blob);
+      const config = {
+        outputfile: 'output.mp4',
+        fragment_duration: 30000,
+      };
 
-          // إضافة الفيديو إلى مشغل الفيديو في HTML
-          const videoElement = document.getElementById('videoPlayer');
-          videoElement.src = blobURL;
+      const mp4boxFile = new MP4Box();
+
+      mp4boxFile.appendBuffer(videoBuffer);
+
+      mp4boxFile.onReady = function (info) {
+        mp4boxFile.setSegmentOptions(info.tracks, config.fragment_duration);
+        mp4boxFile.initializeSegmentation();
+
+        mp4boxFile.setSegmentOptions(info.tracks, config.fragment_duration);
+        mp4boxFile.onSegment = function (id, user, buffer, sampleNum, sampleLength, is_last) {
+          console.log('Segment', id, 'is_last', is_last);
+          // يمكنك هنا معالجة buffer الخاص بك لكل جزء مقسم
+          // buffer يحتوي على جزء من الفيديو
+          // يمكنك تحميل الbuffer هنا أو إجراء الإجراء المطلوب
         };
 
-        reader.readAsArrayBuffer(selectedFile);
-      }
+        mp4boxFile.start();
+      };
+    }
+  }
+
+  function readFileAsBuffer(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+
+      reader.onload = function (event) {
+        resolve(event.target.result);
+      };
+
+      reader.onerror = function (event) {
+        reject(new Error('Failed to read the file.'));
+      };
+
+      reader.readAsArrayBuffer(file);
     });
-  </script>
+  }
+</script>
 </body>
 </html>
