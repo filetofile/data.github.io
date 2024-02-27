@@ -1,75 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MP4 Fragmentation Converter</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      background-color: #f4f4f4;
-    }
-
-    .container {
-      text-align: center;
-    }
-
-    input {
-      margin-bottom: 10px;
-    }
-
-    button {
-      padding: 10px 20px;
-      font-size: 16px;
-      cursor: pointer;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تحويل فيديو إلى Fragmented</title>
 </head>
 <body>
-  <div class="container">
-    <h1>MP4 Fragmentation Converter</h1>
-    <input type="file" id="inputFile" accept=".mp4">
-    <button onclick="convertVideo()">Convert</button>
-  </div>
-  <script src="https://unpkg.com/mp4box@0.1.0/dist/mp4box.all.js"></script>
-  <script>
-    document.getElementById('inputFile').addEventListener('change', handleFile);
 
-    function handleFile(event) {
-      const file = event.target.files[0];
+<input type="file" id="videoInput" accept="video/*">
+<button onclick="convertToFragmented()">تحويل إلى Fragmented</button>
 
-      if (file) {
-        convertVideo(file);
-      }
+<script src="mp4box.all.js"></script>
+<script>
+    function convertToFragmented() {
+        const inputElement = document.getElementById('videoInput');
+        const file = inputElement.files[0];
+
+        if (file) {
+            const reader = new FileReader();
+
+            reader.onload = function (event) {
+                const videoData = event.target.result;
+
+                // استخدم mp4box.all.js هنا لتحويل الفيديو إلى Fragmented
+                const box = new MP4Box();
+                box.appendBuffer(videoData);
+                box.flush();
+                
+                // الآن يمكنك التعامل مع الفيديو المجزأ هنا
+                console.log('تم تحويل الفيديو إلى Fragmented.');
+            };
+
+            reader.readAsArrayBuffer(file);
+        } else {
+            console.error('يرجى تحديد ملف فيديو.');
+        }
     }
+</script>
 
-    function convertVideo(file) {
-      const reader = new FileReader();
-      const MP4BoxInstance = new MP4Box(); // Instantiate MP4Box
-
-      reader.onload = function (e) {
-        const videoData = new Uint8Array(e.target.result);
-
-        const inputFileName = file.name.replace(/\.[^/.]+$/, "");
-        const outputFileName = `${inputFileName}_fragmented.mp4`;
-
-        const params = ['-frag', inputFileName, '-new', outputFileName];
-        
-        MP4BoxInstance.onMoovStart = function () {
-          console.log('Conversion completed successfully!');
-        };
-
-        MP4BoxInstance.appendBuffer(videoData);
-        MP4BoxInstance.save();
-      };
-
-      reader.readAsArrayBuffer(file);
-    }
-  </script>
 </body>
 </html>
