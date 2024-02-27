@@ -63,7 +63,7 @@
           console.log('Conversion completed successfully!');
         };
 
-        MP4Box.appendBuffer(videoData);
+        mp4box.appendBufferChunk(videoData, 0, videoData.length, true);
         MP4Box.save();
       };
 
