@@ -50,6 +50,7 @@
 
     function convertVideo(file) {
       const reader = new FileReader();
+      const MP4BoxInstance = new MP4Box(); // Instantiate MP4Box
 
       reader.onload = function (e) {
         const videoData = new Uint8Array(e.target.result);
@@ -59,12 +60,12 @@
 
         const params = ['-frag', inputFileName, '-new', outputFileName];
         
-        MP4Box.onMoovStart = function () {
+        MP4BoxInstance.onMoovStart = function () {
           console.log('Conversion completed successfully!');
         };
 
-        mp4box.appendBufferChunk(videoData, 0, videoData.length, true);
-        MP4Box.save();
+        MP4BoxInstance.appendBuffer(videoData);
+        MP4BoxInstance.save();
       };
 
       reader.readAsArrayBuffer(file);
