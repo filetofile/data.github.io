@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>صفحة الويب التجريبية</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <button id="myButton">اضغط هنا</button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // التحقق من وجود الزر عند تحميل الصفحة
+            var myButton = document.getElementById("myButton");
+
+            myButton.addEventListener('click', function() {
+                    alert('تم النقر على الزر!');
+                });
+        });
+    </script>
+</body>
+</html>
