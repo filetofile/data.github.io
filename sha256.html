@@ -89,7 +89,7 @@
         }
 
         // إضافة طول الرسالة الأصلي في النهاية
-        const messageLengthArray = new ArrayBuffer(8);
+        const messageLengthArray = new ArrayBuffer(64);
         new DataView(messageLengthArray).setUint32(4, messageLength, false);
         const lengthBytes = new Uint8Array(messageLengthArray);
         message.push(...Array.from(lengthBytes));
