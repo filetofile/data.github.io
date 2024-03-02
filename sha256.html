@@ -47,11 +47,16 @@
       return hex;
     }
 
-    function hashInput() {
-      const inputText = document.getElementById('inputField').value;
-      const resultDiv = document.getElementById('result');
+    function sha256(input) {
+        function stringToBytes(str) {
+            const bytes = [];
+            for (let i = 0; i < str.length; ++i) {
+                bytes.push(str.charCodeAt(i));
+            }
+            return bytes;
+        }
 
-      function sha256(input) {
+        function sha256(input) {
         const K = [
   0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5,
   0x3956c25b, 0x59f111f1, 0x923f82a4, 0xab1c5ed5,
@@ -77,7 +82,7 @@
           0x510e527f, 0x9b05688c, 0x1f83d9ab, 0x5be0cd19
         ];
 
-        const message = [...new Uint8Array(new TextEncoder().encode(input))];
+        const message = stringToBytes(input);
         let messageLength = message.length * 8;
 
         // إضافة 0x80 للرسالة
@@ -85,15 +90,14 @@
 
         // إضافة الصفرات حتى يصبح طول الرسالة % 512 = 448
         while ((message.length * 8) % 512 !== 448) {
-          message.push(0);
+            message.push(0);
         }
 
         // إضافة طول الرسالة الأصلي في النهاية
-const messageLengthArray = new ArrayBuffer(8);
-new DataView(messageLengthArray).setBigUint64(0, BigInt(message.length * 8), false);
-const lengthBytes = new Uint8Array(messageLengthArray);
-message.push(...Array.from(lengthBytes));
-
+        const messageLengthArray = new ArrayBuffer(8);
+        new DataView(messageLengthArray).setBigUint64(0, BigInt(message.length * 8), false);
+        const lengthBytes = new Uint8Array(messageLengthArray);
+        message.push(...Array.from(lengthBytes));
 
         // تقسيم الرسالة إلى كتل 512 بت
         const chunks = new Int32Array(new Uint8Array(message).buffer);
@@ -101,60 +105,63 @@ message.push(...Array.from(lengthBytes));
         let hashValues = new Uint32Array(initialHashValues);
 
         for (let i = 0; i < chunks.length; i += 16) {
-          const w = new Uint32Array(64);
+            const w = new Uint32Array(64);
 
-          for (let j = 0; j < 16; j++) {
-            w[j] = chunks[i + j];
-          }
+            for (let j = 0; j < 16; j++) {
+                w[j] = chunks[i + j];
+            }
 
-          for (let j = 16; j < 64; j++) {
-            const s0 = rightRotate(w[j - 15], 7) ^ rightRotate(w[j - 15], 18) ^ (w[j - 15] >>> 3);
-            const s1 = rightRotate(w[j - 2], 17) ^ rightRotate(w[j - 2], 19) ^ (w[j - 2] >>> 10);
-            w[j] = w[j - 16] + s0 + w[j - 7] + s1;
-          }
+            for (let j = 16; j < 64; j++) {
+                const s0 = rightRotate(w[j - 15], 7) ^ rightRotate(w[j - 15], 18) ^ (w[j - 15] >>> 3);
+                const s1 = rightRotate(w[j - 2], 17) ^ rightRotate(w[j - 2], 19) ^ (w[j - 2] >>> 10);
+                w[j] = w[j - 16] + s0 + w[j - 7] + s1;
+            }
 
-          let [a, b, c, d, e, f, g, h] = hashValues;
+            let [a, b, c, d, e, f, g, h] = hashValues;
 
-          for (let j = 0; j < 64; j++) {
-            const S1 = rightRotate(e, 6) ^ rightRotate(e, 11) ^ rightRotate(e, 25);
-            const ch = (e & f) ^ (~e & g);
-            const temp1 = h + S1 + ch + K[j] + w[j];
-            const S0 = rightRotate(a, 2) ^ rightRotate(a, 13) ^ rightRotate(a, 22);
-            const maj = (a & b) ^ (a & c) ^ (b & c);
-            const temp2 = S0 + maj;
+            for (let j = 0; j < 64; j++) {
+                const S1 = rightRotate(e, 6) ^ rightRotate(e, 11) ^ rightRotate(e, 25);
+                const ch = (e & f) ^ (~e & g);
+                const temp1 = h + S1 + ch + K[j] + w[j];
+                const S0 = rightRotate(a, 2) ^ rightRotate(a, 13) ^ rightRotate(a, 22);
+                const maj = (a & b) ^ (a & c) ^ (b & c);
+                const temp2 = S0 + maj;
 
-            h = g;
-            g = f;
-            f = e;
-            e = d + temp1;
-            d = c;
-            c = b;
-            b = a;
-            a = temp1 + temp2;
-          }
+                h = g;
+                g = f;
+                f = e;
+                e = d + temp1;
+                d = c;
+                c = b;
+                b = a;
+                a = temp1 + temp2;
+            }
 
-          hashValues[0] += a;
-          hashValues[1] += b;
-          hashValues[2] += c;
-          hashValues[3] += d;
-          hashValues[4] += e;
-          hashValues[5] += f;
-          hashValues[6] += g;
-          hashValues[7] += h;
+            hashValues[0] += a;
+            hashValues[1] += b;
+            hashValues[2] += c;
+            hashValues[3] += d;
+            hashValues[4] += e;
+            hashValues[5] += f;
+            hashValues[6] += g;
+            hashValues[7] += h;
         }
 
         return toHexString(hashValues[0]) +
-               toHexString(hashValues[1]) +
-               toHexString(hashValues[2]) +
-               toHexString(hashValues[3]) +
-               toHexString(hashValues[4]) +
-               toHexString(hashValues[5]) +
-               toHexString(hashValues[6]) +
-               toHexString(hashValues[7]);
-      }
+            toHexString(hashValues[1]) +
+            toHexString(hashValues[2]) +
+            toHexString(hashValues[3]) +
+            toHexString(hashValues[4]) +
+            toHexString(hashValues[5]) +
+            toHexString(hashValues[6]) +
+            toHexString(hashValues[7]);
+    }
 
-      const hashResult = sha256(inputText);
-      resultDiv.innerText = 'Hashed Text: ' + hashResult;
+    function hashInput() {
+        const inputText = document.getElementById('inputField').value;
+        const resultDiv = document.getElementById('result');
+        const hashResult = sha256(inputText);
+        resultDiv.innerText = 'Hashed Text: ' + hashResult;
     }
   </script>
 
