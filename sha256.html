@@ -89,10 +89,11 @@
         }
 
         // إضافة طول الرسالة الأصلي في النهاية
-        const messageLengthArray = new ArrayBuffer(64);
-        new DataView(messageLengthArray).setUint32(4, messageLength, false);
-        const lengthBytes = new Uint8Array(messageLengthArray);
-        message.push(...Array.from(lengthBytes));
+        // إضافة طول الرسالة الأصلي في النهاية
+const messageLengthArray = new ArrayBuffer(8);
+new DataView(messageLengthArray).setBigUint64(0, BigInt(messageLength), false);
+const lengthBytes = new Uint8Array(messageLengthArray);
+message.push(...Array.from(lengthBytes));
 
         // تقسيم الرسالة إلى كتل 512 بت
         const chunks = new Int32Array(new Uint8Array(message).buffer);
