@@ -77,7 +77,7 @@
           0x510e527f, 0x9b05688c, 0x1f83d9ab, 0x5be0cd19
         ];
 
-        const message = new TextEncoder().encode(input);
+        const message = [...new Uint8Array(new TextEncoder().encode(input))];
         let messageLength = message.length * 8;
 
         // إضافة 0x80 للرسالة
