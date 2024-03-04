@@ -1,68 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>رفع صورة إلى Blogger</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin: 20px;
-        }
-
-        input {
-            margin-bottom: 10px;
-        }
-
-        button {
-            padding: 10px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background-color: #45a049;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blogger API Authentication</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+  </style>
 </head>
 <body>
-    <input type="file" id="imageInput" accept="image/*">
-    <button onclick="uploadImage()">رفع الصورة</button>
-    <div id="result"></div>
+  <h1>Blogger API Authentication</h1>
 
-    <script>
-        const imageInput = document.getElementById('imageInput');
-        const resultDiv = document.getElementById('result');
+  <button onclick="authenticate()">Authenticate</button>
 
-        function uploadImage() {
-            const file = imageInput.files[0];
-            if (file) {
-                const formData = new FormData();
-                formData.append('file', file);
+  <script>
+    function authenticate() {
+      const clientID = '574488240288-fs9u6ccs51ee1djoam3em5p98rsft7fl.apps.googleusercontent.com';
+      const clientSecret = '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';
+      const redirectUri = 'https://filetofile.github.io/data.github.io/blogger.html';
+      const scope = 'https://www.googleapis.com/auth/blogger';
 
-                // Replace 'YOUR_API_KEY' and 'YOUR_BLOG_ID' with your Blogger API key and blog ID
-                const apiKey = 'YOUR_API_KEY';
-                const blogId = 'YOUR_BLOG_ID';
+      const authUrl = `https://accounts.google.com/o/oauth2/auth?client_id=${clientID}&redirect_uri=${redirectUri}&scope=${scope}&response_type=token`;
 
-                fetch(`https://www.googleapis.com/blogger/v3/blogs/${blogId}/posts/upload?key=${apiKey}`, {
-                    method: 'POST',
-                    body: formData,
-                })
-                .then(response => response.json())
-                .then(data => {
-                    resultDiv.innerHTML = `تم رفع الصورة بنجاح. رابط الصورة: <a href="${data.url}">${data.url}</a>`;
-                })
-                .catch(error => {
-                    resultDiv.innerHTML = `حدث خطأ أثناء رفع الصورة: ${error.message}`;
-                });
-            } else {
-                resultDiv.innerHTML = 'الرجاء اختيار صورة قبل الرفع.';
-            }
+      // Open a new window for authentication
+      window.open(authUrl, '_blank', 'width=500,height=600');
+
+      // Listen for changes in the URL to extract the token
+      window.addEventListener('message', function (event) {
+        if (event.data.type === 'authResponse') {
+          const authCode = event.data.code;
+
+          // Perform a POST request to get the access token
+          fetch('https://accounts.google.com/o/oauth2/token', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: `code=${authCode}&client_id=${clientID}&client_secret=${clientSecret}&redirect_uri=${redirectUri}&grant_type=authorization_code`,
+          })
+            .then(response => response.json())
+            .then(data => {
+              // 'data.access_token' contains the access token for API requests
+              console.log('Access Token:', data.access_token);
+            })
+            .catch(error => {
+              console.error('Error fetching access token:', error);
+            });
         }
-    </script>
+      });
+    }
+  </script>
 </body>
 </html>
