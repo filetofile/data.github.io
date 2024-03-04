@@ -23,7 +23,8 @@
       const redirectUri = 'https://filetofile.github.io/data.github.io/blogger.html';
       const scope = 'https://www.googleapis.com/auth/blogger';
     
-    function authenticate() {
+    function authenticate()
+      {
       
 
       const authUrl = `https://accounts.google.com/o/oauth2/auth?client_id=${clientID}&redirect_uri=${redirectUri}&scope=${scope}&response_type=token`;
@@ -32,7 +33,13 @@
       window.open(authUrl, '_blank', 'width=500,height=600');
 
       // Listen for changes in the URL to extract the token
-      window.addEventListener('message', function (event) {
+      
+    }
+
+
+
+
+    window.addEventListener('load', function (event) {
         if (event.data.type === 'authResponse') {
           const authCode = event.data.code;
 
@@ -54,7 +61,6 @@
             });
         }
       });
-    }
   </script>
 </body>
 </html>
