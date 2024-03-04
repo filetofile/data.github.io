@@ -13,7 +13,7 @@
 </head>
 <body>
 
-  V2
+  V3
   <h1>Blogger API Authentication</h1>
 
   <button onclick="authenticate()">Authenticate</button>
@@ -101,34 +101,34 @@
 
 
 
-function validateuser() 
-{
+async function getUserId(accessToken) {
+  try {
+    // إرسال طلب GET إلى Google OAuth2 API
+    const response = await fetch('https://www.googleapis.com/oauth2/v1/userinfo', {
+      headers: {
+        'Authorization': `Bearer ${accessToken}`,
+      },
+    });
 
+    // التحقق من رمز الحالة
+    if (response.ok) {
+      // استخراج معلومات المستخدم من JSON response
+      const userInfo = await response.json();
 
+      // استخراج معرف المستخدم
+      const userId = userInfo.id;
 
-// بعد الحصول على access token
-fetch('https://www.googleapis.com/oauth2/v1/userinfo', {
-  headers: {
-    'Authorization': `Bearer ${accessToken}`,
-  },
-})
-  .then(response => response.json())
-  .then(userInfo => {
-    const userId = userInfo.id;
-    alert('User ID: ' + userId);
-    // يمكنك استخدام userId كما تحتاج
-  })
-  .catch(error => {
-    alert('Error fetching user info:' + error);
-  });
-
-
-
-
-  
+      // إرجاع معرف المستخدم
+      return userId;
+    } else {
+      // إظهار رسالة خطأ مع رمز الحالة
+      throw new Error(`Error fetching user info: ${response.status}`);
+    }
+  } catch (error) {
+    // إظهار رسالة خطأ للمستخدم
+    console.error(error.message);
+  }
 }
-
-
 
 
 
@@ -162,7 +162,8 @@ fetch('https://www.googleapis.com/oauth2/v1/userinfo', {
               throw new Error(`Token info error: ${tokenInfo.error_description}`);
             }
             alert('Access Token is valid. Token Info: '+ JSON.stringify(tokenInfo));
-            validateuser();
+            const userId = await getUserId(accessToken);
+            alert('User ID:'+ userId);
           })
           .catch(error => {
             alert('Error validating access token:' + error);
