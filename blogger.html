@@ -17,157 +17,121 @@
   <button onclick="authenticate()">Authenticate</button>
 
   <script>
-
     const clientID = '574488240288-fs9u6ccs51ee1djoam3em5p98rsft7fl.apps.googleusercontent.com';
-      const clientSecret = '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';
-      const redirectUri = 'https://filetofile.github.io/data.github.io/blogger.html';
-      const scope = 'https://www.googleapis.com/auth/blogger';
-    
-    function authenticate()
-      {
-      
+    const clientSecret = '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';
+    const redirectUri = 'https://filetofile.github.io/data.github.io/blogger.html';
+    let accessToken;
 
-      const authUrl = `https://accounts.google.com/o/oauth2/auth?client_id=${clientID}&redirect_uri=${redirectUri}&scope=${scope}&response_type=token`;
-
-      // Open a new window for authentication
+    function authenticate() {
+      const authUrl = `https://accounts.google.com/o/oauth2/auth?client_id=${clientID}&redirect_uri=${redirectUri}&scope=https://www.googleapis.com/auth/blogger&response_type=token`;
       window.open(authUrl, '_self');
-
-      // Listen for changes in the URL to extract the token
-      
     }
 
+    function validateAccessTokenuserbloger(nnn, mmm) {
+      if (nnn) {
+        console.log('========:', nnn);
+        const userId = mmm;
 
+        fetch(`https://www.googleapis.com/blogger/v3/users/${userId}/blogs`, {
+          headers: {
+            'Authorization': `Bearer ${nnn}`,
+            'Content-Type': 'application/json',
+          },
+        })
+          .then(response => response.json())
+          .then(blogList => {
+            console.log('User\'s Blog List:', blogList);
+            const nameToSearch = 'Azer';
+            const targetBlog = blogList.items.find(blog => blog.name === nameToSearch);
 
-
-
-
-function validateAccessTokenuserbloger(nnn,mmm) {
-  if (nnn) {
-
-
-console.log('========:',nnn);
-
-const userId = mmm; // ط§ط³طھط¨ط¯ظ„ ط¨ط§ظ„ظ‚ظٹظ…ط© ط§ظ„طھظٹ طھط­طµظ„ ط¹ظ„ظٹظ‡ط§ ظ…ظ† ط§ظ„ط®ط·ظˆط© ط§ظ„ط³ط§ط¨ظ‚ط©
-
-fetch(`https://www.googleapis.com/blogger/v3/users/${userId}/blogs`, {
-  headers: {
-    'Authorization': `Bearer ${nnn}`,
-    'Content-Type': 'application/json',
-  },
-})
-  .then(response => response.json())
-  .then(blogList => {
-    console.log('User\'s Blog List:', blogList);
-
-
-
-
-const nameToSearch = 'Azer';
-    const targetBlog = blogList.items.find(blog => blog.name === nameToSearch);
-
-    if (targetBlog) {
-      console.log('Target Blog ID:', targetBlog.id);
-
-validateAccessTokenuserpost(nnn,targetBlog.id);
-      
-    } else {
-      console.log('No blog found with the specified name.');
+            if (targetBlog) {
+              console.log('Target Blog ID:', targetBlog.id);
+              validateAccessTokenuserpost(nnn, targetBlog.id);
+            } else {
+              console.log('No blog found with the specified name.');
+            }
+          })
+          .catch(error => {
+            console.log('Error getting user\'s blog list:', error);
+          });
+      } else {
+        alert('No access token available. Please authenticate first.');
+      }
     }
 
-
-    
-  })
-  .catch(error => {
-    console.log('Error getting user\'s blog list:',error);
-  }); 
-  } else {
-    alert('No access token available. Please authenticate first.');
-  }
-}
-
-
-
-
-
-
-
-
-
-
-    
+    function validateAccessTokenuserpost(accessToken, blogId) {
+      if (accessToken && blogId) {
+        fetch(`https://www.googleapis.com/blogger/v3/blogs/${blogId}/posts`, {
+          headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            'Content-Type': 'application/json',
+          },
+        })
+          .then(response => response.json())
+          .then(postList => {
+            console.log('Blog\'s Post List:', postList);
+            // Perform additional actions with the postList
+          })
+          .catch(error => {
+            console.log('Error getting blog\'s post list:', error);
+          });
+      } else {
+        alert('Invalid access token or blog ID.');
+      }
+    }
 
     function validateAccessToken() {
-  if (accessToken) {
-
-fetch('https://www.googleapis.com/oauth2/v3/tokeninfo', {
-  headers: {
-    'Authorization': `Bearer ${accessToken}`,
-    'Content-Type': 'application/json',
-  },
-})
-  .then(response => response.json())
-  .then(tokenInfo => {
-    console.log('Token Info:', tokenInfo);
-    if (tokenInfo.error) {
-      throw new Error(`Token info error: ${tokenInfo.error_description}`);
+      if (accessToken) {
+        fetch('https://www.googleapis.com/oauth2/v3/tokeninfo', {
+          headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            'Content-Type': 'application/json',
+          },
+        })
+          .then(response => response.json())
+          .then(tokenInfo => {
+            console.log('Token Info:', tokenInfo);
+            if (tokenInfo.error) {
+              throw new Error(`Token info error: ${tokenInfo.error_description}`);
+            }
+            console.log('Access Token is valid. Token Info: ', JSON.stringify(tokenInfo));
+          })
+          .catch(error => {
+            alert('Error validating access token:' + error);
+            alert('Access Token is invalid. Please re-authenticate.');
+          });
+      } else {
+        alert('No access token available. Please authenticate first.');
+      }
     }
-    console.log('Access Token is valid. Token Info: ' , JSON.stringify(tokenInfo));
-    //validateAccessTokenuserinfo(accessToken);
-    //checkAlbumExists("azertyuiopqs", accessToken);
-  })
-  .catch(error => {
-    alert('Error validating access token:'+error);
-    alert('Access Token is invalid. Please re-authenticate.');
-  }); 
-  } else {
-    alert('No access token available. Please authenticate first.');
-  }
-}
 
+    window.addEventListener('load', () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const authorizationCode = urlParams.get('code');
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-window.addEventListener('load', () => {
-  const urlParams = new URLSearchParams(window.location.search);
-  const authorizationCode = urlParams.get('code');
-
-  if (authorizationCode) {
-    
-    fetch('https://oauth2.googleapis.com/token', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: `code=${authorizationCode}&client_id=${clientId}&client_secret=${clientSecret}&redirect_uri=${redirectUri}&grant_type=authorization_code`,
-    })
-      .then(response => response.json())
-      .then(data => {
-        accessToken = data.access_token;
-        console.log('Access Token:',accessToken);
-        console.log('Authentication successful. Access Token: ' , accessToken);
-        validateAccessToken(); // Perform access token validation
-      })
-      .catch(error => {
-        alert('Error exchanging authorization code for tokens:'+error);
-        alert('Error exchanging authorization code for tokens. Please try again.');
-      });
-  } else {
-    alert('No authorization code found in the URL.');
-  }
-});
+      if (authorizationCode) {
+        fetch('https://oauth2.googleapis.com/token', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: `code=${authorizationCode}&client_id=${clientID}&client_secret=${clientSecret}&redirect_uri=${redirectUri}&grant_type=authorization_code`,
+        })
+          .then(response => response.json())
+          .then(data => {
+            accessToken = data.access_token;
+            console.log('Access Token:', accessToken);
+            console.log('Authentication successful. Access Token: ', accessToken);
+            validateAccessToken();
+          })
+          .catch(error => {
+            alert('Error exchanging authorization code for tokens:' + error);
+            alert('Error exchanging authorization code for tokens. Please try again.');
+          });
+      } else {
+        alert('No authorization code found in the URL.');
+      }
+    });
   </script>
 </body>
 </html>
