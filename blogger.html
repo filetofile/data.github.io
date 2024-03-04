@@ -25,8 +25,8 @@
     let accessToken;
 
     function authenticate() {
-      const authUrl = `https://accounts.google.com/o/oauth2/auth?client_id=${clientID}&redirect_uri=${redirectUri}&scope=https://www.googleapis.com/auth/blogger&response_type=token`;
-      window.open(authUrl, '_self');
+      const authUrl = `https://accounts.google.com/o/oauth2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}&response_type=code`;
+  const authWindow = window.open(authUrl, '_self');
     }
 
     function validateAccessTokenuserbloger(nnn, mmm) {
