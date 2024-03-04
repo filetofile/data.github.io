@@ -29,7 +29,7 @@
       const authUrl = `https://accounts.google.com/o/oauth2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}&response_type=code`;
   const authWindow = window.open(authUrl, '_self');
     }
-/*
+
     function validateAccessTokenuserbloger(nnn, mmm) {
       if (nnn) {
         console.log('========:', nnn);
@@ -93,11 +93,11 @@
         })
           .then(response => response.json())
           .then(tokenInfo => {
-            console.log('Token Info:', tokenInfo);
+            alert('Token Info:'+ tokenInfo);
             if (tokenInfo.error) {
               throw new Error(`Token info error: ${tokenInfo.error_description}`);
             }
-            console.log('Access Token is valid. Token Info: ', JSON.stringify(tokenInfo));
+            alert('Access Token is valid. Token Info: '+ JSON.stringify(tokenInfo));
           })
           .catch(error => {
             alert('Error validating access token:' + error);
@@ -118,13 +118,13 @@
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
           },
-          body: `code=${authorizationCode}&client_id=${clientID}&client_secret=${clientSecret}&redirect_uri=${redirectUri}&grant_type=authorization_code`,
+          body: `code=${authorizationCode}&client_id=${clientId}&client_secret=${clientSecret}&redirect_uri=${redirectUri}&grant_type=authorization_code`,
         })
           .then(response => response.json())
           .then(data => {
             accessToken = data.access_token;
-            console.log('Access Token:', accessToken);
-            console.log('Authentication successful. Access Token: ', accessToken);
+            alert('Access Token:'+ accessToken);
+            alert('Authentication successful. Access Token: ' + JSON.stringify(accessToken));
             validateAccessToken();
           })
           .catch(error => {
@@ -137,7 +137,7 @@
     });
 
 
-    */
+    
   </script>
 </body>
 </html>
