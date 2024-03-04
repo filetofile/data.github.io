@@ -17,11 +17,14 @@
   <button onclick="authenticate()">Authenticate</button>
 
   <script>
-    function authenticate() {
-      const clientID = '574488240288-fs9u6ccs51ee1djoam3em5p98rsft7fl.apps.googleusercontent.com';
+
+    const clientID = '574488240288-fs9u6ccs51ee1djoam3em5p98rsft7fl.apps.googleusercontent.com';
       const clientSecret = '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';
       const redirectUri = 'https://filetofile.github.io/data.github.io/blogger.html';
       const scope = 'https://www.googleapis.com/auth/blogger';
+    
+    function authenticate() {
+      
 
       const authUrl = `https://accounts.google.com/o/oauth2/auth?client_id=${clientID}&redirect_uri=${redirectUri}&scope=${scope}&response_type=token`;
 
@@ -44,10 +47,10 @@
             .then(response => response.json())
             .then(data => {
               // 'data.access_token' contains the access token for API requests
-              console.log('Access Token:', data.access_token);
+              alert('Access Token:'+ data.access_token);
             })
             .catch(error => {
-              console.error('Error fetching access token:', error);
+              alert('Error fetching access token:'+ error);
             });
         }
       });
