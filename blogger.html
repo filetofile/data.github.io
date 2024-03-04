@@ -13,7 +13,7 @@
 </head>
 <body>
 
-  V1
+  V2
   <h1>Blogger API Authentication</h1>
 
   <button onclick="authenticate()">Authenticate</button>
@@ -83,6 +83,70 @@
       }
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function validateuser() 
+{
+
+
+
+// بعد الحصول على access token
+fetch('https://www.googleapis.com/oauth2/v1/userinfo', {
+  headers: {
+    'Authorization': `Bearer ${accessToken}`,
+  },
+})
+  .then(response => response.json())
+  .then(userInfo => {
+    const userId = userInfo.id;
+    alert('User ID: ' + userId);
+    // يمكنك استخدام userId كما تحتاج
+  })
+  .catch(error => {
+    alert('Error fetching user info:' + error);
+  });
+
+
+
+
+  
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
     function validateAccessToken() {
       if (accessToken) {
         fetch('https://www.googleapis.com/oauth2/v3/tokeninfo', {
@@ -98,6 +162,7 @@
               throw new Error(`Token info error: ${tokenInfo.error_description}`);
             }
             alert('Access Token is valid. Token Info: '+ JSON.stringify(tokenInfo));
+            validateuser();
           })
           .catch(error => {
             alert('Error validating access token:' + error);
