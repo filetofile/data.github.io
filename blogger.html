@@ -13,7 +13,7 @@
 </head>
 <body>
 
-  V5
+  V6
   <h1>Blogger API Authentication</h1>
 
   <button onclick="authenticate()">Authenticate</button>
@@ -78,8 +78,7 @@
           .catch(error => {
             console.log('Error getting blog\'s post list:', error);
           });
-      } else {
-        alert('Invalid access token or blog ID.');
+      
       }
     }
 
