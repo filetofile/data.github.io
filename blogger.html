@@ -13,7 +13,7 @@
 </head>
 <body>
 
-  V7
+  V8
   <h1>Blogger API Authentication</h1>
 
   <button onclick="authenticate()">Authenticate</button>
@@ -24,20 +24,19 @@
     const redirectUri = 'https://filetofile.github.io/data.github.io/blogger.html';
     const scope = 'https://www.googleapis.com/auth/blogger';
     let accessToken;
+    let userId;
 
     function authenticate() {
       const authUrl = `https://accounts.google.com/o/oauth2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}&response_type=code`;
   const authWindow = window.open(authUrl, '_self');
     }
 
-    function validateAccessTokenuserbloger(nnn, mmm) {
-      if (nnn) {
-        console.log('========:', nnn);
-        const userId = mmm;
+    function validateAccessTokenuserbloger() {
+ 
 
         fetch(`https://www.googleapis.com/blogger/v3/users/${userId}/blogs`, {
           headers: {
-            'Authorization': `Bearer ${nnn}`,
+            'Authorization': `Bearer ${accessToken}`,
             'Content-Type': 'application/json',
           },
         })
@@ -49,7 +48,7 @@
 
             if (targetBlog) {
               console.log('Target Blog ID:', targetBlog.id);
-              validateAccessTokenuserpost(nnn, targetBlog.id);
+              validateAccessTokenuserpost(accessToken, targetBlog.id);
             } else {
               console.log('No blog found with the specified name.');
             }
@@ -57,9 +56,6 @@
           .catch(error => {
             console.log('Error getting user\'s blog list:', error);
           });
-      } else {
-        alert('No access token available. Please authenticate first.');
-      }
     }
 
     function validateAccessTokenuserpost(accessToken, blogId) {
@@ -111,10 +107,10 @@ fetch('https://www.googleapis.com/blogger/v3/users/self', {
 })
   .then(response => response.json())
   .then(userInfo => {
-    const userId = userInfo.id;
+    userId = userInfo.id;
     alert('User ID:'+ userId);
     alert('User userInfo ID:'+ userInfo);
-   // validateAccessTokenuserbloger(nnn,userId);
+   validateAccessTokenuserbloger();
   })
   .catch(error => {
     console.log('Error getting user ID:' ,error);
