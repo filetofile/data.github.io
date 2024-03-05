@@ -13,7 +13,7 @@
 </head>
 <body>
 
-  V11
+  V12
   <h1>Blogger API Authentication</h1>
 
   <button onclick="authenticate()">Authenticate</button>
@@ -85,7 +85,7 @@ function uploadImage(file, blogId, postId, accessToken) {
 
   // إنشاء طلب XMLHttpRequest
   var request = new XMLHttpRequest();
-  request.open("POST", "https://www.googleapis.com/blogger/v3/blogs/" + blogId + "/posts/" + postId + "/media");
+  request.open("POST","https://www.googleapis.com/blogger/v3/blogs/{blogId}/posts/{postId}/media");
   request.setRequestHeader("Authorization", "Bearer " + accessToken);
   request.setRequestHeader("Content-Type", file.type);
 
