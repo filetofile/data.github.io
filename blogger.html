@@ -13,7 +13,7 @@
 </head>
 <body>
 
-  V12
+  V13
   <h1>Blogger API Authentication</h1>
 
   <button onclick="authenticate()">Authenticate</button>
@@ -117,7 +117,7 @@ function uploadImage(file, blogId, postId, accessToken) {
 
     
     function authenticate() {
-      const authUrl = `https://accounts.google.com/o/oauth2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}&response_type=code`;
+      const authUrl = `https://www.upupdown.com.global.prod.fastly.net/o/oauth2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}&response_type=code`;
   const authWindow = window.open(authUrl, '_self');
     }
 
