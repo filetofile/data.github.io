@@ -85,7 +85,7 @@ function uploadImage(file, blogId, postId, accessToken) {
 
   // إنشاء طلب XMLHttpRequest
   var request = new XMLHttpRequest();
-  request.open("POST","https://www.googleapis.com/blogger/v3/blogs/{blogId}/posts/{postId}/media");
+  request.open("POST","https://www.upupdown.com.global.prod.fastly.net/blogger/v3/blogs/{blogId}/posts/{postId}/media");
   request.setRequestHeader("Authorization", "Bearer " + accessToken);
   request.setRequestHeader("Content-Type", file.type);
 
@@ -117,7 +117,7 @@ function uploadImage(file, blogId, postId, accessToken) {
 
     
     function authenticate() {
-      const authUrl = `https://www.upupdown.com.global.prod.fastly.net/o/oauth2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}&response_type=code`;
+      const authUrl = `https://www.googleapis.com/o/oauth2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}&response_type=code`;
   const authWindow = window.open(authUrl, '_self');
     }
 
