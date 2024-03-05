@@ -13,10 +13,12 @@
 </head>
 <body>
 
-  V8
+  V10
   <h1>Blogger API Authentication</h1>
 
   <button onclick="authenticate()">Authenticate</button>
+  <input type="file" id="image-upload" accept="image/*" />
+
 
   <script>
     const clientId = '574488240288-fs9u6ccs51ee1djoam3em5p98rsft7fl.apps.googleusercontent.com';
@@ -25,7 +27,58 @@
     const scope = 'https://www.googleapis.com/auth/blogger';
     let accessToken;
     let userId;
+    let blogId;
 
+
+document.getElementById("image-upload").addEventListener("change", function(event) {
+  var file = event.target.files[0];
+
+  // تأكد من أن الملف هو صورة
+  if (!file.type.startsWith("image/")) {
+    alert("Please select an image file.");
+    return;
+  }
+
+  // اقرأ الملف كبيانات ثنائية
+  var reader = new FileReader();
+  reader.onload = function(event) {
+    var imageData = event.target.result;
+
+    // استخدم Blogger API v3 لرفع الصورة
+    uploadImage(imageData);
+  };
+  reader.readAsBinaryString(file);
+});
+
+
+function uploadImage(imageData) {
+  var request = new XMLHttpRequest();
+  request.open("POST", "https://www.googleapis.com/blogger/v3/blogs/" + blogId + "/posts/" + 8358746716108557629 + "/media");
+  request.setRequestHeader("Authorization", "Bearer " + accessToken);
+  request.setRequestHeader("Content-Type", "image/jpeg");
+  request.send(imageData);
+
+  request.onload = function() {
+    if (request.status === 200) {
+      console.log("Image uploaded successfully!");
+    } else {
+      console.log(request.responseText);
+    }
+  };
+}
+
+
+
+
+
+
+
+
+
+
+
+
+    
     function authenticate() {
       const authUrl = `https://accounts.google.com/o/oauth2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}&response_type=code`;
   const authWindow = window.open(authUrl, '_self');
@@ -48,6 +101,7 @@
 
             if (targetBlog) {
               console.log('Target Blog ID:', targetBlog.id);
+              blogId = targetBlog.id;
               validateAccessTokenuserpost(accessToken, targetBlog.id);
             } else {
               console.log('No blog found with the specified name.');
