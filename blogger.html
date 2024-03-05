@@ -13,7 +13,7 @@
 </head>
 <body>
 
-  V10
+  V11
   <h1>Blogger API Authentication</h1>
 
   <button onclick="authenticate()">Authenticate</button>
@@ -28,8 +28,9 @@
     let accessToken;
     let userId;
     let blogId;
+    let postId = 8358746716108557629;
 
-
+/*
 document.getElementById("image-upload").addEventListener("change", function(event) {
   var file = event.target.files[0];
 
@@ -67,9 +68,45 @@ function uploadImage(imageData) {
   };
 }
 
+*/
+    document.getElementById("image-upload").addEventListener("change", function(event) {
+  var file = event.target.files[0];
 
+  // استدعاء وظيفة uploadImage
+  uploadImage(file, blogId, postId, accessToken);
+});
 
+function uploadImage(file, blogId, postId, accessToken) {
+  // تأكد من أن الملف هو صورة
+  if (!file.type.startsWith("image/")) {
+    console.log("Please select an image file.");
+    return;
+  }
 
+  // إنشاء طلب XMLHttpRequest
+  var request = new XMLHttpRequest();
+  request.open("POST", "https://www.googleapis.com/blogger/v3/blogs/" + blogId + "/posts/" + postId + "/media");
+  request.setRequestHeader("Authorization", "Bearer " + accessToken);
+  request.setRequestHeader("Content-Type", file.type);
+
+  // إرسال طلب XMLHttpRequest
+  request.send(file);
+
+  // معالجة استجابة XMLHttpRequest
+  request.onload = function() {
+    if (request.status === 200) {
+      console.log("Image uploaded successfully!");
+      var response = JSON.parse(request.responseText);
+      var imageUrl = response.url;
+
+      // اعرض الصورة في منشور المدونة
+      // ...
+
+    } else {
+      console.log(request.responseText);
+    }
+  };
+}
 
 
 
